@@ -56,7 +56,7 @@ export default function HolidayBonusCalculator() {
   
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-4 text-[#0D5EAF]">
+      <h3 className="text-2xl font-bold mb-6 text-blue-600 relative">
         {t('calculators.holidayBonus.title')}
       </h3>
       
@@ -123,43 +123,48 @@ export default function HolidayBonusCalculator() {
       {/* Results Section */}
       {results && (
         <motion.div 
-          className="mt-8 p-4 bg-gray-50 rounded-md"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          transition={{ duration: 0.3 }}
+          className="results-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <h4 className="text-lg font-semibold mb-3 text-[#0D5EAF]">
-            {t('calculators.holidayBonus.resultsTitle')}
+          <h4 className="text-xl font-bold mb-4 text-blue-600 relative inline-block">
+            Holiday Bonus Results
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-blue-500 rounded"></div>
           </h4>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col">
-              <div className="mb-2">
-                <span className="font-medium">{t('calculators.holidayBonus.grossSalary')}:</span>
-                <span className="font-bold ml-1">€{results.grossSalary.toFixed(2)}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col space-y-3">
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Monthly Gross Salary</span>
+                <span className="font-bold text-lg text-blue-700">€{results.grossSalary.toFixed(2)}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-medium">{t('calculators.holidayBonus.daysWorked')}:</span>
-                <span className="font-bold ml-1">{results.daysWorked} {t('calculators.holidayBonus.days')}</span>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Days Worked</span>
+                <span className="font-bold text-lg text-blue-700">{results.daysWorked} days</span>
               </div>
-              <div className="mb-2">
-                <span className="font-medium">{t('calculators.holidayBonus.eligibleAmount')}:</span>
-                <span className="font-bold ml-1">€{results.eligibleAmount.toFixed(2)}</span>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Eligible Bonus Amount</span>
+                <span className="font-bold text-lg text-blue-700">€{results.eligibleAmount.toFixed(2)}</span>
               </div>
             </div>
             
-            <div className="flex flex-col">
-              <div className="mb-2">
-                <span className="font-medium">{t('calculators.holidayBonus.bonusType')}:</span>
-                <span className="font-bold ml-1">{t(`calculators.holidayBonus.${results.bonusType}Bonus`)}</span>
+            <div className="flex flex-col space-y-3">
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Bonus Type</span>
+                <span className="font-bold text-lg text-blue-700">{t(`calculators.holidayBonus.${results.bonusType}Bonus`)}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-medium">{t('calculators.holidayBonus.taxWithheld')}:</span>
-                <span className="font-bold ml-1">€{results.taxWithheld.toFixed(2)}</span>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Tax Withheld</span>
+                <span className="font-bold text-lg text-blue-700">€{results.taxWithheld.toFixed(2)}</span>
               </div>
-              <div className="bg-[#0D5EAF] bg-opacity-10 p-2 rounded-md">
-                <span className="font-medium">{t('calculators.holidayBonus.netBonusAmount')}:</span>
-                <span className="font-bold text-[#0D5EAF] ml-1">€{results.netBonusAmount.toFixed(2)}</span>
+              
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg shadow-md">
+                <span className="text-white block mb-1 text-sm">Net Bonus Amount</span>
+                <span className="font-bold text-xl text-white">€{results.netBonusAmount.toFixed(2)}</span>
               </div>
             </div>
           </div>
