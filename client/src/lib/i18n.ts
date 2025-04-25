@@ -149,7 +149,8 @@ const elTranslations = {
       familyStatus: 'Οικογενειακή Κατάσταση',
       single: 'Άγαμος/η',
       married: 'Έγγαμος/η',
-      children: 'Αριθμός Παιδιών'
+      children: 'Αριθμός Παιδιών',
+      gross: 'Μικτά'
     },
     incomeTax: {
       title: 'Υπολογιστής Ατομικού Φόρου Εισοδήματος',
