@@ -1,4 +1,4 @@
-// Greek income tax calculation functions for 2025
+// Greek tax calculation functions for 2025 - Matched to aftertax.gr
 
 // Income Tax Calculation
 export function calculateIncomeTax(data: {
@@ -19,93 +19,117 @@ export function calculateIncomeTax(data: {
   const medicalExpenses = parseFloat(data.medicalExpenses.toString()) || 0;
   const charitableDonations = parseFloat(data.charitableDonations.toString()) || 0;
   
-  // Calculate total gross income
+  // Calculate gross income by source
   const totalGrossIncome = employmentIncome + selfEmploymentIncome + rentalIncome + pensionIncome;
   
-  // Calculate social security contributions first (based on income type)
-  // For employment income: 13.87%
-  const employmentSocialSecurity = employmentIncome * 0.1387;
-  // For self-employment (approximately 27% but varies depending on profession)
-  const selfEmploymentSocialSecurity = selfEmploymentIncome * 0.27;
-  // Pension income has no social security deduction
-  const pensionSocialSecurity = 0;
-  // Rental income has no social security deduction
-  const rentalSocialSecurity = 0;
+  // Employment income tax calculation - with 14 salaries system
+  let employmentTax = 0;
+  if (employmentIncome > 0) {
+    // Employment income is annual, but paid in 14 installments
+    // Calculate taxable employment income (after social security 13.87%)
+    const employmentSocialSecurity = employmentIncome * 0.1387;
+    const taxableEmploymentIncome = employmentIncome - employmentSocialSecurity;
+    
+    // Apply tax brackets to taxable employment income
+    employmentTax = calculateIncomeTaxByBrackets(taxableEmploymentIncome);
+  }
   
-  // Total social security contributions
-  const totalSocialSecurity = employmentSocialSecurity + selfEmploymentSocialSecurity + 
-                              pensionSocialSecurity + rentalSocialSecurity;
+  // Self-employment income tax calculation
+  let selfEmploymentTax = 0;
+  if (selfEmploymentIncome > 0) {
+    // Calculate taxable self-employment income (after social security 27.10%)
+    const selfEmploymentSocialSecurity = selfEmploymentIncome * 0.271;
+    const taxableSelfEmploymentIncome = selfEmploymentIncome - selfEmploymentSocialSecurity;
+    
+    // Apply tax brackets to taxable self-employment income
+    selfEmploymentTax = calculateIncomeTaxByBrackets(taxableSelfEmploymentIncome);
+  }
   
-  // Calculate taxable income after social security
-  const totalIncomeAfterSocialSecurity = totalGrossIncome - totalSocialSecurity;
+  // Rental income tax calculation
+  let rentalTax = 0;
+  if (rentalIncome > 0) {
+    // Rental income has different brackets:
+    // First 12,000€: 15%
+    // 12,001€ - 35,000€: 35%
+    // Above 35,000€: 45%
+    if (rentalIncome <= 12000) {
+      rentalTax = rentalIncome * 0.15;
+    } else if (rentalIncome <= 35000) {
+      rentalTax = 12000 * 0.15 + (rentalIncome - 12000) * 0.35;
+    } else {
+      rentalTax = 12000 * 0.15 + 23000 * 0.35 + (rentalIncome - 35000) * 0.45;
+    }
+  }
   
-  // Calculate tax-free allowance based on family status and children
-  let taxFreeAllowance = 1000; // Base amount
+  // Pension income tax calculation
+  let pensionTax = 0;
+  if (pensionIncome > 0) {
+    // Apply tax brackets directly to pension income (no social security deduction)
+    pensionTax = calculateIncomeTaxByBrackets(pensionIncome);
+  }
   
-  // Add additional tax-free amount for children
+  // Apply tax credits based on family status and dependents
+  let taxCredit = 777; // Base tax credit (single person)
+  
+  // Add tax credit for dependents (children)
   if (data.children === '1') {
-    taxFreeAllowance += 1000;
+    taxCredit = 810; // One child
   } else if (data.children === '2') {
-    taxFreeAllowance += 2000;
+    taxCredit = 900; // Two children
   } else if (data.children === '3') {
-    taxFreeAllowance += 5000;
+    taxCredit = 1120; // Three children
   } else if (data.children === '4+') {
-    taxFreeAllowance += 6000;
+    taxCredit = 1340; // Four or more children
   }
   
-  // Add additional tax-free amount for family status
-  if (data.familyStatus === 'married') {
-    taxFreeAllowance += 1000;
-  }
+  // Reduce tax credit for higher incomes
+  // For income > 12,000€, credit is reduced by 20€ per 1,000€
+  const incomeAboveThreshold = Math.max(0, totalGrossIncome - 12000);
+  const creditReduction = Math.min(taxCredit, Math.floor(incomeAboveThreshold / 1000) * 20);
+  const finalTaxCredit = taxCredit - creditReduction;
   
-  // Add deductions for medical expenses and charitable donations
-  const medicalDeduction = Math.min(medicalExpenses, totalIncomeAfterSocialSecurity * 0.1);
-  const charitableDeduction = Math.min(charitableDonations, totalIncomeAfterSocialSecurity * 0.05);
+  // Calculate total income tax before tax credit
+  const totalIncomeTaxBeforeCredit = employmentTax + selfEmploymentTax + rentalTax + pensionTax;
   
-  // Calculate total deductions
-  const totalDeductions = taxFreeAllowance + medicalDeduction + charitableDeduction;
+  // Apply tax credit (cannot result in negative tax)
+  const incomeTaxAmount = Math.max(0, totalIncomeTaxBeforeCredit - finalTaxCredit);
   
-  // Calculate taxable income after all deductions (cannot be negative)
-  const taxableIncome = Math.max(0, totalIncomeAfterSocialSecurity - totalDeductions);
-  
-  // Calculate income tax using 2025 tax brackets (progressive tax system)
-  let incomeTax = 0;
-  let taxRate = "";
-  
-  if (taxableIncome <= 10000) {
-    incomeTax = taxableIncome * 0.09;
-    taxRate = "9%";
-  } else if (taxableIncome <= 20000) {
-    incomeTax = 10000 * 0.09 + (taxableIncome - 10000) * 0.22;
-    taxRate = "9% - 22%";
-  } else if (taxableIncome <= 30000) {
-    incomeTax = 10000 * 0.09 + 10000 * 0.22 + (taxableIncome - 20000) * 0.28;
-    taxRate = "9% - 28%";
-  } else if (taxableIncome <= 40000) {
-    incomeTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + (taxableIncome - 30000) * 0.36;
-    taxRate = "9% - 36%";
-  } else {
-    incomeTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + 10000 * 0.36 + (taxableIncome - 40000) * 0.44;
-    taxRate = "9% - 44%";
-  }
-  
-  // Calculate solidarity contribution (assuming reduced for 2025)
-  let solidarityContribution = 0;
-  if (taxableIncome > 30000) {
-    solidarityContribution = (taxableIncome - 30000) * 0.02;
-  }
+  // Calculate solidarity contribution (abolished in 2023, but we'll keep it for future implementation)
+  let solidarityAmount = 0;
   
   // Calculate total tax
-  const totalTax = incomeTax + solidarityContribution;
+  const totalTax = incomeTaxAmount + solidarityAmount;
+  
+  // Generate appropriate tax rate string
+  let taxRate = "Progressive 9% - 44%";
   
   return {
     totalIncome: totalGrossIncome,
     taxRate,
-    taxDeductions: totalDeductions,
-    incomeTaxAmount: incomeTax,
-    solidarityAmount: solidarityContribution,
+    taxDeductions: finalTaxCredit,
+    incomeTaxAmount,
+    solidarityAmount,
     totalTax
   };
+}
+
+// Helper function to apply tax brackets (matches aftertax.gr brackets)
+function calculateIncomeTaxByBrackets(taxableIncome: number): number {
+  let tax = 0;
+  
+  if (taxableIncome <= 10000) {
+    tax = taxableIncome * 0.09;
+  } else if (taxableIncome <= 20000) {
+    tax = 10000 * 0.09 + (taxableIncome - 10000) * 0.22;
+  } else if (taxableIncome <= 30000) {
+    tax = 10000 * 0.09 + 10000 * 0.22 + (taxableIncome - 20000) * 0.28;
+  } else if (taxableIncome <= 40000) {
+    tax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + (taxableIncome - 30000) * 0.36;
+  } else {
+    tax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + 10000 * 0.36 + (taxableIncome - 40000) * 0.44;
+  }
+  
+  return tax;
 }
 
 // Withholding Tax Calculation
@@ -118,68 +142,51 @@ export function calculateWithholdingTax(data: {
   // Parse numbers
   const monthlySalary = parseFloat(data.monthlySalary.toString()) || 0;
   
-  // Calculate annual gross salary (assuming 14 payments for Greek employment system)
-  const annualGrossSalary = monthlySalary * 14;
-  
   // Calculate social security contributions (approximately 13.87% for employees)
-  const monthlySocialSecurity = monthlySalary * 0.1387;
-  const annualSocialSecurity = monthlySocialSecurity * 14;
+  const socialSecurity = monthlySalary * 0.1387;
   
-  // Calculate annual taxable amount after social security
-  const annualTaxableIncome = annualGrossSalary - annualSocialSecurity;
+  // Calculate monthly taxable amount after social security
+  const taxableAmount = monthlySalary - socialSecurity;
   
-  // Calculate tax-free allowance
-  let taxFreeAllowance = 1000; // Base amount
+  // Estimate annual taxable income (with 14 payments in Greek system)
+  const annualTaxableIncome = taxableAmount * 14;
   
-  // Add additional allowance for family status
-  if (data.familyStatus === 'married') {
-    taxFreeAllowance += 1000;
-  }
+  // Calculate annual tax based on aftertax.gr formula
+  const annualTax = calculateIncomeTaxByBrackets(annualTaxableIncome);
   
-  // Add additional allowance for children
+  // Calculate tax credits
+  let taxCredit = 777; // Base tax credit (single person)
+  
+  // Add tax credit for dependents (children)
   if (data.children === '1') {
-    taxFreeAllowance += 1000;
+    taxCredit = 810; // One child
   } else if (data.children === '2') {
-    taxFreeAllowance += 2000;
+    taxCredit = 900; // Two children
   } else if (data.children === '3') {
-    taxFreeAllowance += 5000;
+    taxCredit = 1120; // Three children
   } else if (data.children === '4+') {
-    taxFreeAllowance += 6000;
+    taxCredit = 1340; // Four or more children
   }
   
-  // Part-time workers get an additional allowance
-  if (data.employmentType === 'part-time') {
-    taxFreeAllowance += 500;
-  }
+  // Reduce tax credit for higher incomes
+  // For income > 12,000€, credit is reduced by 20€ per 1,000€
+  const incomeAboveThreshold = Math.max(0, annualTaxableIncome - 12000);
+  const creditReduction = Math.min(taxCredit, Math.floor(incomeAboveThreshold / 1000) * 20);
+  const finalTaxCredit = taxCredit - creditReduction;
   
-  // Calculate taxable income after tax-free allowance
-  const annualTaxableIncomeAfterAllowance = Math.max(0, annualTaxableIncome - taxFreeAllowance);
+  // Calculate annual tax after credits
+  const annualTaxAfterCredits = Math.max(0, annualTax - finalTaxCredit);
   
-  // Calculate annual withholding tax using progressive tax brackets
-  let annualWithholdingTax = 0;
-  
-  if (annualTaxableIncomeAfterAllowance <= 10000) {
-    annualWithholdingTax = annualTaxableIncomeAfterAllowance * 0.09;
-  } else if (annualTaxableIncomeAfterAllowance <= 20000) {
-    annualWithholdingTax = 10000 * 0.09 + (annualTaxableIncomeAfterAllowance - 10000) * 0.22;
-  } else if (annualTaxableIncomeAfterAllowance <= 30000) {
-    annualWithholdingTax = 10000 * 0.09 + 10000 * 0.22 + (annualTaxableIncomeAfterAllowance - 20000) * 0.28;
-  } else if (annualTaxableIncomeAfterAllowance <= 40000) {
-    annualWithholdingTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + (annualTaxableIncomeAfterAllowance - 30000) * 0.36;
-  } else {
-    annualWithholdingTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + 10000 * 0.36 + (annualTaxableIncomeAfterAllowance - 40000) * 0.44;
-  }
-  
-  // Calculate monthly withholding tax (divide by 12 months for regular withholding)
-  const monthlyWithholdingTax = annualWithholdingTax / 12;
+  // Calculate monthly withholding tax (divided by 12 for monthly withholding)
+  const withholdingTaxAmount = annualTaxAfterCredits / 12;
   
   // Calculate net monthly salary
-  const netSalary = monthlySalary - monthlySocialSecurity - monthlyWithholdingTax;
+  const netSalary = monthlySalary - socialSecurity - withholdingTaxAmount;
   
   return {
     grossSalary: monthlySalary,
-    socialSecurity: monthlySocialSecurity,
-    withholdingTaxAmount: monthlyWithholdingTax,
+    socialSecurity,
+    withholdingTaxAmount,
     netSalary
   };
 }
@@ -191,61 +198,51 @@ export function calculateHolidayBonus(data: {
   bonusType: string; // "christmas", "easter", "summer"
   paymentDate: Date;
 }) {
-  // Parse numbers
+  // Parse numbers and dates
   const monthlySalary = parseFloat(data.monthlySalary.toString()) || 0;
+  const startDate = new Date(data.startDate);
+  const paymentDate = new Date(data.paymentDate || new Date());
+  const currentYear = paymentDate.getFullYear();
   
-  // Set reference dates based on bonus type
-  const year = data.paymentDate.getFullYear();
+  // Define calculation periods for each bonus type
   let periodStartDate: Date;
   let periodEndDate: Date;
-  let fullAmount: number;
+  let fullBonusAmount: number;
   
-  switch (data.bonusType) {
-    case 'christmas':
-      // Christmas bonus covers May 1 to December 31 (8 months)
-      // Paid by December 21
-      periodStartDate = new Date(year, 4, 1); // May 1
-      periodEndDate = new Date(year, 11, 31); // December 31
-      fullAmount = monthlySalary; // Full month's salary
-      break;
-    case 'easter':
-      // Easter bonus covers January 1 to April 30 (4 months)
-      // Paid before Easter (variable date, but use April 15 as approximate)
-      periodStartDate = new Date(year, 0, 1); // January 1
-      periodEndDate = new Date(year, 3, 30); // April 30
-      fullAmount = monthlySalary / 2; // Half month's salary
-      break;
-    case 'summer':
-      // Summer/vacation bonus covers January 1 to June 30 (6 months)
-      // Paid by July 15
-      periodStartDate = new Date(year, 0, 1); // January 1
-      periodEndDate = new Date(year, 5, 30); // June 30
-      fullAmount = monthlySalary / 2; // Half month's salary
-      break;
-    default:
-      periodStartDate = new Date(year, 0, 1);
-      periodEndDate = new Date(year, 11, 31);
-      fullAmount = monthlySalary;
+  if (data.bonusType === 'christmas') {
+    // Christmas bonus: period from May 1 to December 31
+    periodStartDate = new Date(currentYear, 4, 1); // May 1
+    periodEndDate = new Date(currentYear, 11, 31); // December 31
+    fullBonusAmount = monthlySalary; // One full monthly salary
+  } else if (data.bonusType === 'easter') {
+    // Easter bonus: period from January 1 to April 30
+    periodStartDate = new Date(currentYear, 0, 1); // January 1
+    periodEndDate = new Date(currentYear, 3, 30); // April 30
+    fullBonusAmount = monthlySalary / 2; // Half monthly salary
+  } else { // Summer bonus
+    // Summer bonus: period from January 1 to June 30
+    periodStartDate = new Date(currentYear, 0, 1); // January 1
+    periodEndDate = new Date(currentYear, 5, 30); // June 30
+    fullBonusAmount = monthlySalary / 2; // Half monthly salary
   }
   
-  // Calculate days worked in the period
-  const employmentStartDate = new Date(data.startDate);
-  const effectiveStartDate = employmentStartDate > periodStartDate ? employmentStartDate : periodStartDate;
+  // Calculate eligible portion based on days worked
+  // If employee started after period start, use the later start date
+  const effectiveStartDate = startDate > periodStartDate ? startDate : periodStartDate;
   
-  // Calculate total days in period
-  const totalDays = Math.floor((periodEndDate.getTime() - periodStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  // Total days in the period
+  const totalDaysInPeriod = Math.floor((periodEndDate.getTime() - periodStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   
-  // Calculate days worked
+  // Days worked in the period
   const daysWorked = Math.max(0, Math.floor((periodEndDate.getTime() - effectiveStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1);
   
-  // Calculate pro-rated amount
-  const eligibleAmount = (daysWorked / totalDays) * fullAmount;
+  // Calculate eligible amount proportionally
+  const eligibleAmount = (daysWorked / totalDaysInPeriod) * fullBonusAmount;
   
-  // Calculate tax (flat 15% for holiday bonuses in Greece)
-  const taxRate = 0.15;
-  const taxWithheld = eligibleAmount * taxRate;
+  // Apply tax withholding (flat 15% for holiday bonuses)
+  const taxWithheld = eligibleAmount * 0.15;
   
-  // Calculate net bonus amount
+  // Calculate net bonus
   const netBonusAmount = eligibleAmount - taxWithheld;
   
   return {
@@ -253,7 +250,7 @@ export function calculateHolidayBonus(data: {
     daysWorked,
     eligibleAmount,
     bonusType: data.bonusType,
-    bonusAmount: eligibleAmount,
+    bonusAmount: eligibleAmount, // Same as eligibleAmount for clarity
     taxWithheld,
     netBonusAmount
   };
