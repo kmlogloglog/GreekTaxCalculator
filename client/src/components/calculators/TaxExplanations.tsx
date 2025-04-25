@@ -73,7 +73,7 @@ export default function TaxExplanations() {
                   
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="rates">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         {t('calculators.explanations.incomeRates')}
                       </AccordionTrigger>
                       <AccordionContent>
@@ -116,7 +116,7 @@ export default function TaxExplanations() {
                     </AccordionItem>
                     
                     <AccordionItem value="deductions">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         Key Deductions
                       </AccordionTrigger>
                       <AccordionContent>
@@ -130,7 +130,7 @@ export default function TaxExplanations() {
                     </AccordionItem>
                     
                     <AccordionItem value="solidarity">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         Solidarity Contribution
                       </AccordionTrigger>
                       <AccordionContent>
@@ -202,7 +202,7 @@ export default function TaxExplanations() {
                   
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="calculation">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         How It's Calculated
                       </AccordionTrigger>
                       <AccordionContent>
@@ -217,7 +217,7 @@ export default function TaxExplanations() {
                     </AccordionItem>
                     
                     <AccordionItem value="reductions">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         Rate Reductions
                       </AccordionTrigger>
                       <AccordionContent>
@@ -291,7 +291,7 @@ export default function TaxExplanations() {
                   
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="christmas">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         Christmas Bonus (Δώρο Χριστουγέννων)
                       </AccordionTrigger>
                       <AccordionContent>
@@ -305,7 +305,7 @@ export default function TaxExplanations() {
                     </AccordionItem>
                     
                     <AccordionItem value="easter">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         Easter Bonus (Δώρο Πάσχα)
                       </AccordionTrigger>
                       <AccordionContent>
@@ -319,7 +319,7 @@ export default function TaxExplanations() {
                     </AccordionItem>
                     
                     <AccordionItem value="summer">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         Summer Holiday Bonus (Επίδομα Αδείας)
                       </AccordionTrigger>
                       <AccordionContent>
@@ -334,7 +334,7 @@ export default function TaxExplanations() {
                     </AccordionItem>
                     
                     <AccordionItem value="taxation">
-                      <AccordionTrigger className="font-medium text-[#0D5EAF]">
+                      <AccordionTrigger className="font-medium text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-md">
                         Taxation of Bonuses
                       </AccordionTrigger>
                       <AccordionContent>
