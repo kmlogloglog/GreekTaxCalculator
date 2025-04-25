@@ -29,36 +29,45 @@ export default function IncomeTaxCalculator() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     
-    // Handle monthly/yearly income synchronization
+    // Handle monthly/yearly income synchronization with correct decimal places
     if (id === 'monthlyIncome') {
       const monthlyValue = parseFloat(value) || 0;
       const annualSalaries = parseInt(formData.annualSalaries);
-      const yearlyValue = (monthlyValue * annualSalaries).toFixed(2);
+      const yearlyValue = monthlyValue * annualSalaries;
+      
       setFormData(prev => ({ 
         ...prev, 
         [id]: value,
-        yearlyIncome: yearlyValue.toString()
+        yearlyIncome: yearlyValue.toFixed(2)
       }));
+      
+      console.log(`Monthly value ${monthlyValue} × ${annualSalaries} payments = yearly ${yearlyValue}`);
     } 
     else if (id === 'yearlyIncome') {
       const yearlyValue = parseFloat(value) || 0;
       const annualSalaries = parseInt(formData.annualSalaries);
-      const monthlyValue = (yearlyValue / annualSalaries).toFixed(2);
+      const monthlyValue = yearlyValue / annualSalaries;
+      
       setFormData(prev => ({ 
         ...prev, 
         [id]: value,
-        monthlyIncome: monthlyValue.toString()
+        monthlyIncome: monthlyValue.toFixed(2)
       }));
+      
+      console.log(`Yearly value ${yearlyValue} ÷ ${annualSalaries} payments = monthly ${monthlyValue}`);
     }
     else if (id === 'annualSalaries') {
       // When annual salaries change, recalculate yearly from monthly
       const monthlyValue = parseFloat(formData.monthlyIncome) || 0;
       const annualSalaries = parseInt(value);
-      const yearlyValue = (monthlyValue * annualSalaries).toFixed(2);
+      const yearlyValue = monthlyValue * annualSalaries;
+      
+      console.log(`Annual salaries changed to ${annualSalaries}, recalculating: ${monthlyValue} × ${annualSalaries} = ${yearlyValue}`);
+      
       setFormData(prev => ({ 
         ...prev, 
         [id]: value,
-        yearlyIncome: yearlyValue.toString()
+        yearlyIncome: yearlyValue.toFixed(2)
       }));
     }
     else {
@@ -74,7 +83,16 @@ export default function IncomeTaxCalculator() {
   const calculateTax = async () => {
     setIsLoading(true);
     try {
-      const response = await apiRequest('POST', '/api/calculate/income-tax', formData);
+      // Create a modified payload with the calculated yearly income
+      const requestData = {
+        ...formData,
+        employmentIncome: formData.yearlyIncome || 
+          (parseFloat(formData.monthlyIncome) * parseInt(formData.annualSalaries)).toString()
+      };
+      
+      console.log("Sending calculation request with data:", requestData);
+      
+      const response = await apiRequest('POST', '/api/calculate/income-tax', requestData);
       const data = await response.json();
       setResults(data);
     } catch (error) {
