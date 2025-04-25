@@ -154,7 +154,7 @@ export default function WithholdingTaxCalculator() {
         <div className="text-center mt-6">
           <button 
             type="button" 
-            className="bg-[#0D5EAF] hover:bg-[#4D89D6] text-white font-bold py-2 px-6 rounded-md transition duration-300 shadow-md disabled:opacity-50"
+            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-md transition duration-300 shadow-md disabled:opacity-50"
             onClick={calculateTax}
             disabled={isLoading}
           >
