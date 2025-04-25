@@ -18,6 +18,10 @@ export type User = typeof users.$inferSelect;
 
 // Tax calculation schemas
 export const incomeTaxCalculationSchema = z.object({
+  // New simplified input fields
+  monthlyIncome: z.string().or(z.number()).optional(),
+  yearlyIncome: z.string().or(z.number()).optional(),
+  // Kept for backward compatibility, might be removed later
   employmentIncome: z.string().or(z.number()).optional(),
   selfEmploymentIncome: z.string().or(z.number()).optional(),
   rentalIncome: z.string().or(z.number()).optional(),

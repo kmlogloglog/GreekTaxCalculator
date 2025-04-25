@@ -21,13 +21,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
+      // Get yearly income from either yearly or monthly input
+      let employmentIncome = 0;
+      if (data.yearlyIncome) {
+        employmentIncome = parseFloat(data.yearlyIncome) || 0;
+      } else if (data.monthlyIncome) {
+        const monthlyIncome = parseFloat(data.monthlyIncome) || 0;
+        const annualSalaries = parseInt(data.annualSalaries || '14');
+        employmentIncome = monthlyIncome * annualSalaries;
+      }
+      
       const result = calculateIncomeTax({
-        employmentIncome: parseFloat(data.employmentIncome) || 0,
-        selfEmploymentIncome: parseFloat(data.selfEmploymentIncome) || 0,
-        rentalIncome: parseFloat(data.rentalIncome) || 0,
-        pensionIncome: parseFloat(data.pensionIncome) || 0,
-        medicalExpenses: 0, // Default to 0 since removed from UI
-        charitableDonations: 0, // Default to 0 since removed from UI
+        employmentIncome,
+        selfEmploymentIncome: 0, // Removed from UI as requested
+        rentalIncome: 0, // Removed from UI as requested
+        pensionIncome: 0, // Removed from UI as requested
+        medicalExpenses: 0,
+        charitableDonations: 0,
         familyStatus: data.familyStatus,
         children: data.children,
         taxResidenceTransfer: data.taxResidenceTransfer === true,

@@ -94,6 +94,28 @@ const REFERENCE_EXAMPLES = [
     taxableIncome: 40164,
     annualIncomeTax: 9355,
     monthlyIncomeTax: 780
+  },
+  { 
+    // Fifth example - 14 payments, 1892€ monthly
+    monthlyGross: 1892, 
+    annualGross: 26491,
+    annualSalaries: 14, 
+    insuranceRate: 0.134, 
+    taxResidenceTransfer: false,
+    monthlyNet: 1400,
+    annualNet: 19600,
+    taxRate: 0.126, // 12.6%
+    // Additional breakdown data 
+    monthlyInsurance: 253,
+    annualInsurance: 3542,
+    taxableIncome: 22949,
+    annualIncomeTax: 3349,
+    monthlyIncomeTax: 239,
+    // Additional employer data
+    employerCostMonthly: 2314,
+    employerCostYearly: 32399,
+    employerContributionsMonthly: 422,
+    employerContributionsYearly: 5908
   }
 ];
 

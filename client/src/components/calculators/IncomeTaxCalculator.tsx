@@ -20,17 +20,50 @@ export default function IncomeTaxCalculator() {
   const [formData, setFormData] = useState({
     familyStatus: 'single',
     children: '0',
-    employmentIncome: '',
-    selfEmploymentIncome: '',
-    rentalIncome: '',
-    pensionIncome: '',
+    monthlyIncome: '',
+    yearlyIncome: '',
     taxResidenceTransfer: false,
     annualSalaries: '14'
   });
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    
+    // Handle monthly/yearly income synchronization
+    if (id === 'monthlyIncome') {
+      const monthlyValue = parseFloat(value) || 0;
+      const annualSalaries = parseInt(formData.annualSalaries);
+      const yearlyValue = (monthlyValue * annualSalaries).toFixed(2);
+      setFormData(prev => ({ 
+        ...prev, 
+        [id]: value,
+        yearlyIncome: yearlyValue.toString()
+      }));
+    } 
+    else if (id === 'yearlyIncome') {
+      const yearlyValue = parseFloat(value) || 0;
+      const annualSalaries = parseInt(formData.annualSalaries);
+      const monthlyValue = (yearlyValue / annualSalaries).toFixed(2);
+      setFormData(prev => ({ 
+        ...prev, 
+        [id]: value,
+        monthlyIncome: monthlyValue.toString()
+      }));
+    }
+    else if (id === 'annualSalaries') {
+      // When annual salaries change, recalculate yearly from monthly
+      const monthlyValue = parseFloat(formData.monthlyIncome) || 0;
+      const annualSalaries = parseInt(value);
+      const yearlyValue = (monthlyValue * annualSalaries).toFixed(2);
+      setFormData(prev => ({ 
+        ...prev, 
+        [id]: value,
+        yearlyIncome: yearlyValue.toString()
+      }));
+    }
+    else {
+      setFormData(prev => ({ ...prev, [id]: value }));
+    }
   };
   
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,59 +131,31 @@ export default function IncomeTaxCalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.employmentIncome')} ({t('calculators.common.gross')})
+              {t('calculators.incomeTax.monthlyIncome')} ({t('calculators.common.gross')})
             </label>
             <input 
               type="number" 
               min="0" 
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent" 
-              id="employmentIncome"
-              value={formData.employmentIncome}
+              id="monthlyIncome"
+              value={formData.monthlyIncome}
               onChange={handleInputChange}
+              placeholder="Enter monthly gross income"
             />
           </div>
 
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.selfEmploymentIncome')} ({t('calculators.common.gross')})
+              {t('calculators.incomeTax.yearlyIncome')} ({t('calculators.common.gross')})
             </label>
             <input 
               type="number" 
               min="0" 
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
-              id="selfEmploymentIncome"
-              value={formData.selfEmploymentIncome}
+              id="yearlyIncome"
+              value={formData.yearlyIncome}
               onChange={handleInputChange}
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="form-group">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.rentalIncome')} ({t('calculators.common.gross')})
-            </label>
-            <input 
-              type="number" 
-              min="0" 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
-              id="rentalIncome"
-              value={formData.rentalIncome}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.pensionIncome')} ({t('calculators.common.gross')})
-            </label>
-            <input 
-              type="number" 
-              min="0" 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
-              id="pensionIncome"
-              value={formData.pensionIncome}
-              onChange={handleInputChange}
+              placeholder="Annual gross income"
             />
           </div>
         </div>
