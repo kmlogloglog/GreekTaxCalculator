@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Facebook, Twitter, Linkedin } from 'lucide-react';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -30,20 +29,7 @@ export default function Footer() {
             <p className="text-sm text-blue-100">{t('footer.subtitle')}</p>
           </div>
           
-          <div className="flex flex-col items-center md:items-end">
-            <p className="text-sm mb-3 bg-white bg-opacity-10 px-3 py-1 rounded-full">{t('footer.lastUpdated')}</p>
-            <div className="flex space-x-3">
-              <a href="#" className="bg-white text-blue-600 p-2 rounded-full hover:bg-yellow-400 transition-all transform hover:scale-110 shadow-md hover:shadow-lg">
-                <Facebook size={18} />
-              </a>
-              <a href="#" className="bg-white text-blue-600 p-2 rounded-full hover:bg-yellow-400 transition-all transform hover:scale-110 shadow-md hover:shadow-lg">
-                <Twitter size={18} />
-              </a>
-              <a href="#" className="bg-white text-blue-600 p-2 rounded-full hover:bg-yellow-400 transition-all transform hover:scale-110 shadow-md hover:shadow-lg">
-                <Linkedin size={18} />
-              </a>
-            </div>
-          </div>
+          {/* Right side content removed */}
         </div>
         
         <div className="mt-8 pt-4 border-t border-blue-400 border-opacity-30 text-center text-sm text-blue-100">
