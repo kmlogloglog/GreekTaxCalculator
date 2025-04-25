@@ -24,6 +24,8 @@ export const incomeTaxCalculationSchema = z.object({
   pensionIncome: z.string().or(z.number()).optional(),
   familyStatus: z.string(),
   children: z.string(),
+  taxResidenceTransfer: z.boolean().optional(),
+  annualSalaries: z.string().or(z.number()).optional(),
 });
 
 export const withholdingTaxCalculationSchema = z.object({
