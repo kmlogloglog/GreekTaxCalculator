@@ -57,7 +57,7 @@ export default function WithholdingTaxCalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.withholdingTax.monthlySalary')} ({t('calculators.common.gross')})
+              Monthly Gross Salary (€)
             </label>
             <input 
               type="number" 
@@ -71,7 +71,7 @@ export default function WithholdingTaxCalculator() {
 
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.withholdingTax.employmentType')}
+              Employment Type
             </label>
             <select 
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
@@ -79,8 +79,8 @@ export default function WithholdingTaxCalculator() {
               value={formData.employmentType}
               onChange={handleInputChange}
             >
-              <option value="full-time">{t('calculators.withholdingTax.fullTime')}</option>
-              <option value="part-time">{t('calculators.withholdingTax.partTime')}</option>
+              <option value="full-time">Full-time</option>
+              <option value="part-time">Part-time</option>
             </select>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function WithholdingTaxCalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.common.familyStatus')}
+              Family Status
             </label>
             <select 
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
@@ -96,14 +96,14 @@ export default function WithholdingTaxCalculator() {
               value={formData.familyStatus}
               onChange={handleInputChange}
             >
-              <option value="single">{t('calculators.common.single')}</option>
-              <option value="married">{t('calculators.common.married')}</option>
+              <option value="single">Single</option>
+              <option value="married">Married</option>
             </select>
           </div>
 
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.common.children')}
+              Number of Children
             </label>
             <select 
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
@@ -123,7 +123,7 @@ export default function WithholdingTaxCalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.common.annualSalaries')}
+              Annual Salaries
             </label>
             <select 
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
@@ -145,7 +145,7 @@ export default function WithholdingTaxCalculator() {
               onChange={handleCheckboxChange}
             />
             <label htmlFor="taxResidenceTransfer" className="ml-2 block text-sm text-gray-700">
-              {t('calculators.common.taxResidenceTransfer')}
+              Tax Residence Transfer (50% reduction)
             </label>
           </div>
         </div>
@@ -172,28 +172,28 @@ export default function WithholdingTaxCalculator() {
           transition={{ duration: 0.3 }}
         >
           <h4 className="text-lg font-semibold mb-3 text-[#0D5EAF]">
-            {t('calculators.withholdingTax.resultsTitle')}
+            Tax Calculation Results
           </h4>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col">
               <div className="mb-2">
-                <span className="font-medium">{t('calculators.withholdingTax.grossSalary')}:</span>
+                <span className="font-medium">Monthly Gross Salary:</span>
                 <span className="font-bold ml-1">€{results.grossSalary.toFixed(2)}</span>
               </div>
               <div className="mb-2">
-                <span className="font-medium">{t('calculators.withholdingTax.socialSecurity')}:</span>
+                <span className="font-medium">Social Security Contributions:</span>
                 <span className="font-bold ml-1">€{results.socialSecurity.toFixed(2)}</span>
               </div>
             </div>
             
             <div className="flex flex-col">
               <div className="mb-2">
-                <span className="font-medium">{t('calculators.withholdingTax.withholdingTaxAmount')}:</span>
+                <span className="font-medium">Withholding Tax Amount:</span>
                 <span className="font-bold ml-1">€{results.withholdingTaxAmount.toFixed(2)}</span>
               </div>
               <div className="bg-[#0D5EAF] bg-opacity-10 p-2 rounded-md">
-                <span className="font-medium">{t('calculators.withholdingTax.netSalary')}:</span>
+                <span className="font-medium">Net Monthly Salary:</span>
                 <span className="font-bold text-[#0D5EAF] ml-1">€{results.netSalary.toFixed(2)}</span>
               </div>
             </div>
