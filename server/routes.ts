@@ -29,7 +29,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         medicalExpenses: 0, // Default to 0 since removed from UI
         charitableDonations: 0, // Default to 0 since removed from UI
         familyStatus: data.familyStatus,
-        children: data.children
+        children: data.children,
+        taxResidenceTransfer: data.taxResidenceTransfer === true,
+        annualSalaries: parseInt(data.annualSalaries || '14')
       });
       
       res.json(result);
@@ -57,7 +59,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         monthlySalary: parseFloat(data.monthlySalary) || 0,
         employmentType: data.employmentType,
         familyStatus: data.familyStatus,
-        children: data.children
+        children: data.children,
+        taxResidenceTransfer: data.taxResidenceTransfer === true,
+        annualSalaries: parseInt(data.annualSalaries || '14')
       });
       
       res.json(result);

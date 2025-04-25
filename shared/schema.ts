@@ -31,6 +31,8 @@ export const withholdingTaxCalculationSchema = z.object({
   employmentType: z.string(),
   familyStatus: z.string(),
   children: z.string(),
+  taxResidenceTransfer: z.boolean().optional(),
+  annualSalaries: z.string().or(z.number()).optional(),
 });
 
 export const holidayBonusCalculationSchema = z.object({

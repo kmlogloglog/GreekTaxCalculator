@@ -19,12 +19,19 @@ export default function WithholdingTaxCalculator() {
     monthlySalary: '',
     employmentType: 'full-time',
     familyStatus: 'single',
-    children: '0'
+    children: '0',
+    taxResidenceTransfer: false,
+    annualSalaries: '14'
   });
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData(prev => ({ ...prev, [id]: value }));
+  };
+  
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, checked } = e.target;
+    setFormData(prev => ({ ...prev, [id]: checked }));
   };
   
   const calculateTax = async () => {
@@ -110,6 +117,36 @@ export default function WithholdingTaxCalculator() {
               <option value="3">3</option>
               <option value="4+">4+</option>
             </select>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="form-group">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {t('calculators.common.annualSalaries')}
+            </label>
+            <select 
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
+              id="annualSalaries"
+              value={formData.annualSalaries}
+              onChange={handleInputChange}
+            >
+              <option value="12">12</option>
+              <option value="14">14</option>
+            </select>
+          </div>
+          
+          <div className="form-group flex items-center mt-6">
+            <input 
+              type="checkbox"
+              id="taxResidenceTransfer"
+              className="h-4 w-4 text-[#0D5EAF] focus:ring-[#0D5EAF] border-gray-300 rounded"
+              checked={formData.taxResidenceTransfer}
+              onChange={handleCheckboxChange}
+            />
+            <label htmlFor="taxResidenceTransfer" className="ml-2 block text-sm text-gray-700">
+              {t('calculators.common.taxResidenceTransfer')}
+            </label>
           </div>
         </div>
 
