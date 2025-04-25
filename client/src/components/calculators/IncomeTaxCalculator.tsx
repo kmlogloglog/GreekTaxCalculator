@@ -225,43 +225,48 @@ export default function IncomeTaxCalculator() {
       {/* Results Section */}
       {results && (
         <motion.div 
-          className="mt-8 p-4 bg-gray-50 rounded-md"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          transition={{ duration: 0.3 }}
+          className="results-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <h4 className="text-lg font-semibold mb-3 text-[#0D5EAF]">
+          <h4 className="text-xl font-bold mb-4 text-blue-600 relative inline-block">
             Tax Calculation Results
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-blue-500 rounded"></div>
           </h4>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col">
-              <div className="mb-2">
-                <span className="font-medium">Annual Gross Salary:</span>
-                <span className="font-bold ml-1">€{results.totalIncome.toFixed(2)}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col space-y-3">
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Annual Gross Salary</span>
+                <span className="font-bold text-lg text-blue-700">€{results.totalIncome.toFixed(2)}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-medium">Tax Rate:</span>
-                <span className="font-bold ml-1">{results.taxRate}</span>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Tax Rate</span>
+                <span className="font-bold text-lg text-blue-700">{results.taxRate}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-medium">Tax Deductions:</span>
-                <span className="font-bold ml-1">€{results.taxDeductions.toFixed(2)}</span>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Tax Deductions</span>
+                <span className="font-bold text-lg text-blue-700">€{results.taxDeductions.toFixed(2)}</span>
               </div>
             </div>
             
-            <div className="flex flex-col">
-              <div className="mb-2">
-                <span className="font-medium">Income Tax Amount:</span>
-                <span className="font-bold ml-1">€{results.incomeTaxAmount.toFixed(2)}</span>
+            <div className="flex flex-col space-y-3">
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Income Tax Amount</span>
+                <span className="font-bold text-lg text-blue-700">€{results.incomeTaxAmount.toFixed(2)}</span>
               </div>
-              <div className="mb-2">
-                <span className="font-medium">Solidarity Contribution:</span>
-                <span className="font-bold ml-1">€{results.solidarityAmount.toFixed(2)}</span>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Solidarity Contribution</span>
+                <span className="font-bold text-lg text-blue-700">€{results.solidarityAmount.toFixed(2)}</span>
               </div>
-              <div className="bg-[#0D5EAF] bg-opacity-10 p-2 rounded-md">
-                <span className="font-medium">Total Tax:</span>
-                <span className="font-bold text-[#0D5EAF] ml-1">€{results.totalTax.toFixed(2)}</span>
+              
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg shadow-md">
+                <span className="text-white block mb-1 text-sm">Total Tax</span>
+                <span className="font-bold text-xl text-white">€{results.totalTax.toFixed(2)}</span>
               </div>
             </div>
           </div>

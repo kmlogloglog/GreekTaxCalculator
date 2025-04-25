@@ -18,11 +18,17 @@ export default function TaxCalculators() {
   
   return (
     <motion.section 
-      className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden mb-10"
+      className="max-w-4xl mx-auto calculator-card mb-10 relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
+      {/* Decorative elements */}
+      <div className="accent-dot top-4 right-4"></div>
+      <div className="accent-dot bottom-4 left-4"></div>
+      <div className="accent-dot top-1/2 left-6 opacity-50"></div>
+      <div className="accent-dot top-1/3 right-10 opacity-70"></div>
+      
       <Tabs 
         defaultValue="income-tax" 
         value={activeTab}
@@ -30,35 +36,55 @@ export default function TaxCalculators() {
         className="w-full"
       >
         <div className="flex border-b border-gray-200">
-          <TabsList className="flex w-full bg-transparent p-0 h-auto">
+          <TabsList className="flex w-full bg-gradient-to-r from-blue-50 to-blue-100 p-1 h-auto rounded-t-xl">
             <TabsTrigger 
               value="income-tax" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-[#0D5EAF] data-[state=active]:text-[#0D5EAF] data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+                data-[state=active]:bg-gradient-to-r 
+                data-[state=active]:from-blue-500 
+                data-[state=active]:to-blue-600 
+                data-[state=active]:text-white 
+                data-[state=active]:shadow-md"
             >
               {t('calculators.tabs.incomeTax')}
             </TabsTrigger>
             <TabsTrigger 
               value="withholding-tax" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-[#0D5EAF] data-[state=active]:text-[#0D5EAF] data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+                data-[state=active]:bg-gradient-to-r 
+                data-[state=active]:from-blue-500 
+                data-[state=active]:to-blue-600 
+                data-[state=active]:text-white 
+                data-[state=active]:shadow-md"
             >
               {t('calculators.tabs.withholdingTax')}
             </TabsTrigger>
             <TabsTrigger 
               value="holiday-bonus" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-[#0D5EAF] data-[state=active]:text-[#0D5EAF] data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+                data-[state=active]:bg-gradient-to-r 
+                data-[state=active]:from-blue-500 
+                data-[state=active]:to-blue-600 
+                data-[state=active]:text-white 
+                data-[state=active]:shadow-md"
             >
               {t('calculators.tabs.holidayBonus')}
             </TabsTrigger>
             <TabsTrigger 
               value="explanations" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-[#0D5EAF] data-[state=active]:text-[#0D5EAF] data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+                data-[state=active]:bg-gradient-to-r 
+                data-[state=active]:from-blue-500 
+                data-[state=active]:to-blue-600 
+                data-[state=active]:text-white 
+                data-[state=active]:shadow-md"
             >
               {t('calculators.tabs.explanations')}
             </TabsTrigger>
           </TabsList>
         </div>
         
-        <div className="p-6">
+        <div className="p-6 bg-white bg-opacity-80 backdrop-blur-sm">
           <motion.div 
             key={activeTab}
             initial="hidden"
