@@ -19,65 +19,90 @@ export function calculateIncomeTax(data: {
   const medicalExpenses = parseFloat(data.medicalExpenses.toString()) || 0;
   const charitableDonations = parseFloat(data.charitableDonations.toString()) || 0;
   
-  // Calculate total income
-  const totalIncome = employmentIncome + selfEmploymentIncome + rentalIncome + pensionIncome;
+  // Calculate total gross income
+  const totalGrossIncome = employmentIncome + selfEmploymentIncome + rentalIncome + pensionIncome;
   
-  // Calculate deductions based on family status and children
-  let baseDeduction = 1000; // Base deduction
+  // Calculate social security contributions first (based on income type)
+  // For employment income: 13.87%
+  const employmentSocialSecurity = employmentIncome * 0.1387;
+  // For self-employment (approximately 27% but varies depending on profession)
+  const selfEmploymentSocialSecurity = selfEmploymentIncome * 0.27;
+  // Pension income has no social security deduction
+  const pensionSocialSecurity = 0;
+  // Rental income has no social security deduction
+  const rentalSocialSecurity = 0;
   
-  // Add deductions for children
+  // Total social security contributions
+  const totalSocialSecurity = employmentSocialSecurity + selfEmploymentSocialSecurity + 
+                              pensionSocialSecurity + rentalSocialSecurity;
+  
+  // Calculate taxable income after social security
+  const totalIncomeAfterSocialSecurity = totalGrossIncome - totalSocialSecurity;
+  
+  // Calculate tax-free allowance based on family status and children
+  let taxFreeAllowance = 1000; // Base amount
+  
+  // Add additional tax-free amount for children
   if (data.children === '1') {
-    baseDeduction += 1000;
+    taxFreeAllowance += 1000;
   } else if (data.children === '2') {
-    baseDeduction += 2000;
+    taxFreeAllowance += 2000;
   } else if (data.children === '3') {
-    baseDeduction += 5000;
+    taxFreeAllowance += 5000;
   } else if (data.children === '4+') {
-    baseDeduction += 6000;
+    taxFreeAllowance += 6000;
   }
   
-  // Add deductions for medical expenses and charitable donations (simplified)
-  const medicalDeduction = Math.min(medicalExpenses, totalIncome * 0.1);
-  const charitableDeduction = Math.min(charitableDonations, totalIncome * 0.05);
+  // Add additional tax-free amount for family status
+  if (data.familyStatus === 'married') {
+    taxFreeAllowance += 1000;
+  }
   
-  const totalDeductions = baseDeduction + medicalDeduction + charitableDeduction;
+  // Add deductions for medical expenses and charitable donations
+  const medicalDeduction = Math.min(medicalExpenses, totalIncomeAfterSocialSecurity * 0.1);
+  const charitableDeduction = Math.min(charitableDonations, totalIncomeAfterSocialSecurity * 0.05);
   
-  // Calculate income tax using 2025 tax brackets (simplified progressive tax system)
+  // Calculate total deductions
+  const totalDeductions = taxFreeAllowance + medicalDeduction + charitableDeduction;
+  
+  // Calculate taxable income after all deductions (cannot be negative)
+  const taxableIncome = Math.max(0, totalIncomeAfterSocialSecurity - totalDeductions);
+  
+  // Calculate income tax using 2025 tax brackets (progressive tax system)
   let incomeTax = 0;
   let taxRate = "";
   
-  if (totalIncome <= 10000) {
-    incomeTax = totalIncome * 0.09;
+  if (taxableIncome <= 10000) {
+    incomeTax = taxableIncome * 0.09;
     taxRate = "9%";
-  } else if (totalIncome <= 20000) {
-    incomeTax = 10000 * 0.09 + (totalIncome - 10000) * 0.22;
+  } else if (taxableIncome <= 20000) {
+    incomeTax = 10000 * 0.09 + (taxableIncome - 10000) * 0.22;
     taxRate = "9% - 22%";
-  } else if (totalIncome <= 30000) {
-    incomeTax = 10000 * 0.09 + 10000 * 0.22 + (totalIncome - 20000) * 0.28;
+  } else if (taxableIncome <= 30000) {
+    incomeTax = 10000 * 0.09 + 10000 * 0.22 + (taxableIncome - 20000) * 0.28;
     taxRate = "9% - 28%";
-  } else if (totalIncome <= 40000) {
-    incomeTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + (totalIncome - 30000) * 0.36;
+  } else if (taxableIncome <= 40000) {
+    incomeTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + (taxableIncome - 30000) * 0.36;
     taxRate = "9% - 36%";
   } else {
-    incomeTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + 10000 * 0.36 + (totalIncome - 40000) * 0.44;
+    incomeTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + 10000 * 0.36 + (taxableIncome - 40000) * 0.44;
     taxRate = "9% - 44%";
   }
   
   // Calculate solidarity contribution (assuming reduced for 2025)
   let solidarityContribution = 0;
-  if (totalIncome > 30000) {
-    solidarityContribution = (totalIncome - 30000) * 0.02;
+  if (taxableIncome > 30000) {
+    solidarityContribution = (taxableIncome - 30000) * 0.02;
   }
   
-  // Calculate final tax after deductions
-  const finalIncomeTax = Math.max(0, incomeTax - totalDeductions);
-  const totalTax = finalIncomeTax + solidarityContribution;
+  // Calculate total tax
+  const totalTax = incomeTax + solidarityContribution;
   
   return {
-    totalIncome,
+    totalIncome: totalGrossIncome,
     taxRate,
     taxDeductions: totalDeductions,
-    incomeTaxAmount: finalIncomeTax,
+    incomeTaxAmount: incomeTax,
     solidarityAmount: solidarityContribution,
     totalTax
   };
@@ -93,60 +118,68 @@ export function calculateWithholdingTax(data: {
   // Parse numbers
   const monthlySalary = parseFloat(data.monthlySalary.toString()) || 0;
   
+  // Calculate annual gross salary (assuming 14 payments for Greek employment system)
+  const annualGrossSalary = monthlySalary * 14;
+  
   // Calculate social security contributions (approximately 13.87% for employees)
-  const socialSecurity = monthlySalary * 0.1387;
+  const monthlySocialSecurity = monthlySalary * 0.1387;
+  const annualSocialSecurity = monthlySocialSecurity * 14;
   
-  // Calculate taxable amount
-  const taxableAmount = monthlySalary - socialSecurity;
+  // Calculate annual taxable amount after social security
+  const annualTaxableIncome = annualGrossSalary - annualSocialSecurity;
   
-  // Annualize for tax rate determination
-  const annualizedIncome = taxableAmount * 12;
+  // Calculate tax-free allowance
+  let taxFreeAllowance = 1000; // Base amount
   
-  // Apply tax rate based on annual income projection
-  let withholdingTaxRate = 0;
-  
-  if (annualizedIncome <= 10000) {
-    withholdingTaxRate = 0.09;
-  } else if (annualizedIncome <= 20000) {
-    withholdingTaxRate = 0.22;
-  } else if (annualizedIncome <= 30000) {
-    withholdingTaxRate = 0.28;
-  } else if (annualizedIncome <= 40000) {
-    withholdingTaxRate = 0.36;
-  } else {
-    withholdingTaxRate = 0.44;
-  }
-  
-  // Apply reduction for part-time if applicable
-  if (data.employmentType === 'part-time') {
-    withholdingTaxRate = Math.max(0, withholdingTaxRate - 0.02);
-  }
-  
-  // Apply reduction for family status and children
+  // Add additional allowance for family status
   if (data.familyStatus === 'married') {
-    withholdingTaxRate = Math.max(0, withholdingTaxRate - 0.01);
+    taxFreeAllowance += 1000;
   }
   
+  // Add additional allowance for children
   if (data.children === '1') {
-    withholdingTaxRate = Math.max(0, withholdingTaxRate - 0.005);
+    taxFreeAllowance += 1000;
   } else if (data.children === '2') {
-    withholdingTaxRate = Math.max(0, withholdingTaxRate - 0.01);
+    taxFreeAllowance += 2000;
   } else if (data.children === '3') {
-    withholdingTaxRate = Math.max(0, withholdingTaxRate - 0.02);
+    taxFreeAllowance += 5000;
   } else if (data.children === '4+') {
-    withholdingTaxRate = Math.max(0, withholdingTaxRate - 0.03);
+    taxFreeAllowance += 6000;
   }
   
-  // Calculate withholding tax
-  const withholdingTax = taxableAmount * withholdingTaxRate;
+  // Part-time workers get an additional allowance
+  if (data.employmentType === 'part-time') {
+    taxFreeAllowance += 500;
+  }
   
-  // Calculate net salary
-  const netSalary = monthlySalary - socialSecurity - withholdingTax;
+  // Calculate taxable income after tax-free allowance
+  const annualTaxableIncomeAfterAllowance = Math.max(0, annualTaxableIncome - taxFreeAllowance);
+  
+  // Calculate annual withholding tax using progressive tax brackets
+  let annualWithholdingTax = 0;
+  
+  if (annualTaxableIncomeAfterAllowance <= 10000) {
+    annualWithholdingTax = annualTaxableIncomeAfterAllowance * 0.09;
+  } else if (annualTaxableIncomeAfterAllowance <= 20000) {
+    annualWithholdingTax = 10000 * 0.09 + (annualTaxableIncomeAfterAllowance - 10000) * 0.22;
+  } else if (annualTaxableIncomeAfterAllowance <= 30000) {
+    annualWithholdingTax = 10000 * 0.09 + 10000 * 0.22 + (annualTaxableIncomeAfterAllowance - 20000) * 0.28;
+  } else if (annualTaxableIncomeAfterAllowance <= 40000) {
+    annualWithholdingTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + (annualTaxableIncomeAfterAllowance - 30000) * 0.36;
+  } else {
+    annualWithholdingTax = 10000 * 0.09 + 10000 * 0.22 + 10000 * 0.28 + 10000 * 0.36 + (annualTaxableIncomeAfterAllowance - 40000) * 0.44;
+  }
+  
+  // Calculate monthly withholding tax (divide by 12 months for regular withholding)
+  const monthlyWithholdingTax = annualWithholdingTax / 12;
+  
+  // Calculate net monthly salary
+  const netSalary = monthlySalary - monthlySocialSecurity - monthlyWithholdingTax;
   
   return {
     grossSalary: monthlySalary,
-    socialSecurity,
-    withholdingTaxAmount: withholdingTax,
+    socialSecurity: monthlySocialSecurity,
+    withholdingTaxAmount: monthlyWithholdingTax,
     netSalary
   };
 }
