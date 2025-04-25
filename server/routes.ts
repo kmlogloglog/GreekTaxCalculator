@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { calculateIncomeTax, calculateWithholdingTax, calculateHolidayBonus } from "../client/src/lib/taxCalculations";
+import { incomeTaxCalculationSchema, withholdingTaxCalculationSchema, holidayBonusCalculationSchema } from "../shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // prefix all routes with /api
@@ -11,14 +12,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = req.body;
       
-      // Validate input data
-      if (
-        !data || 
-        typeof data !== 'object' || 
-        typeof data.familyStatus !== 'string' || 
-        typeof data.children !== 'string'
-      ) {
-        return res.status(400).json({ message: "Invalid input data" });
+      // Validate using schema
+      const parseResult = incomeTaxCalculationSchema.safeParse(data);
+      if (!parseResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid input data", 
+          errors: parseResult.error.format() 
+        });
       }
       
       const result = calculateIncomeTax({
@@ -44,15 +44,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = req.body;
       
-      // Validate input data
-      if (
-        !data || 
-        typeof data !== 'object' || 
-        typeof data.familyStatus !== 'string' || 
-        typeof data.employmentType !== 'string' || 
-        typeof data.children !== 'string'
-      ) {
-        return res.status(400).json({ message: "Invalid input data" });
+      // Validate using schema
+      const parseResult = withholdingTaxCalculationSchema.safeParse(data);
+      if (!parseResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid input data", 
+          errors: parseResult.error.format() 
+        });
       }
       
       const result = calculateWithholdingTax({
@@ -74,22 +72,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = req.body;
       
-      // Validate input data
-      if (
-        !data || 
-        typeof data !== 'object' || 
-        typeof data.bonusType !== 'string' || 
-        !data.startDate || 
-        !data.monthlySalary
-      ) {
-        return res.status(400).json({ message: "Invalid input data" });
+      // Validate using schema
+      const parseResult = holidayBonusCalculationSchema.safeParse(data);
+      if (!parseResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid input data", 
+          errors: parseResult.error.format() 
+        });
       }
       
       const result = calculateHolidayBonus({
         monthlySalary: parseFloat(data.monthlySalary) || 0,
         startDate: new Date(data.startDate),
         bonusType: data.bonusType,
-        paymentDate: data.paymentDate ? new Date(data.paymentDate) : new Date()
+        paymentDate: new Date() // Always use today's date
       });
       
       res.json(result);
