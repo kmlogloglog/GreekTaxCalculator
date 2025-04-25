@@ -64,7 +64,7 @@ export default function HolidayBonusCalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.holidayBonus.monthlySalary')}
+              {t('calculators.holidayBonus.monthlySalary')} ({t('calculators.common.gross')})
             </label>
             <input 
               type="number" 

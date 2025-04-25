@@ -23,7 +23,8 @@ const enTranslations = {
       familyStatus: 'Family Status',
       single: 'Single',
       married: 'Married',
-      children: 'Number of Children'
+      children: 'Number of Children',
+      gross: 'Gross'
     },
     incomeTax: {
       title: 'Individual Income Tax Calculator',

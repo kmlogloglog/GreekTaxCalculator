@@ -91,7 +91,7 @@ export default function IncomeTaxCalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.employmentIncome')}
+              {t('calculators.incomeTax.employmentIncome')} ({t('calculators.common.gross')})
             </label>
             <input 
               type="number" 
@@ -105,7 +105,7 @@ export default function IncomeTaxCalculator() {
 
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.selfEmploymentIncome')}
+              {t('calculators.incomeTax.selfEmploymentIncome')} ({t('calculators.common.gross')})
             </label>
             <input 
               type="number" 
@@ -121,7 +121,7 @@ export default function IncomeTaxCalculator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.rentalIncome')}
+              {t('calculators.incomeTax.rentalIncome')} ({t('calculators.common.gross')})
             </label>
             <input 
               type="number" 
@@ -135,7 +135,7 @@ export default function IncomeTaxCalculator() {
 
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.pensionIncome')}
+              {t('calculators.incomeTax.pensionIncome')} ({t('calculators.common.gross')})
             </label>
             <input 
               type="number" 
