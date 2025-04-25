@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import IncomeTaxCalculator from './calculators/IncomeTaxCalculator';
 import WithholdingTaxCalculator from './calculators/WithholdingTaxCalculator';
 import HolidayBonusCalculator from './calculators/HolidayBonusCalculator';
+import TaxExplanations from './calculators/TaxExplanations';
 
 export default function TaxCalculators() {
   const { t } = useTranslation();
@@ -48,6 +49,12 @@ export default function TaxCalculators() {
             >
               {t('calculators.tabs.holidayBonus')}
             </TabsTrigger>
+            <TabsTrigger 
+              value="explanations" 
+              className="flex-1 text-center py-4 px-4 font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-[#0D5EAF] data-[state=active]:text-[#0D5EAF] data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+            >
+              {t('calculators.tabs.explanations')}
+            </TabsTrigger>
           </TabsList>
         </div>
         
@@ -69,6 +76,10 @@ export default function TaxCalculators() {
             
             <TabsContent value="holiday-bonus" className="mt-0">
               <HolidayBonusCalculator />
+            </TabsContent>
+            
+            <TabsContent value="explanations" className="mt-0">
+              <TaxExplanations />
             </TabsContent>
           </motion.div>
         </div>

@@ -14,7 +14,8 @@ const enTranslations = {
     tabs: {
       incomeTax: 'Income Tax',
       withholdingTax: 'Withholding Tax',
-      giftTax: 'Gift Tax'
+      holidayBonus: 'Holiday Bonus',
+      explanations: 'Explanations'
     },
     common: {
       calculate: 'Calculate',
@@ -53,23 +54,40 @@ const enTranslations = {
       withholdingTaxAmount: 'Withholding Tax',
       netSalary: 'Net Monthly Salary'
     },
-    giftTax: {
-      title: 'Gift & Inheritance Tax Calculator',
-      giftValue: 'Gift/Inheritance Value (€)',
-      relationship: 'Relationship to Donor/Deceased',
-      categoryA: 'Category A (Spouse, Children, Parents)',
-      categoryB: 'Category B (Grandchildren, Siblings, etc.)',
-      categoryC: 'Category C (Other relatives, Non-relatives)',
-      giftType: 'Type',
-      money: 'Money/Movable Property',
-      realEstate: 'Real Estate',
-      previousGifts: 'Previous Gifts from Same Person (€)',
-      resultsTitle: 'Gift/Inheritance Tax Results',
-      totalGiftValue: 'Total Gift/Inheritance Value',
-      taxRate: 'Tax Rate Applied',
-      taxFreeAmount: 'Tax-Free Allowance',
-      taxableGift: 'Taxable Amount',
-      giftTaxAmount: 'Gift/Inheritance Tax Payable'
+    holidayBonus: {
+      title: 'Holiday Bonus Calculator',
+      monthlySalary: 'Monthly Salary (€)',
+      startDate: 'Employment Start Date',
+      bonusType: 'Bonus Type',
+      christmasBonus: 'Christmas Bonus',
+      easterBonus: 'Easter Bonus',
+      summerBonus: 'Summer Holiday Bonus',
+      paymentDate: 'Payment Date',
+      optional: 'optional',
+      todayDefault: 'Leave empty to use today\'s date',
+      resultsTitle: 'Holiday Bonus Results',
+      grossSalary: 'Monthly Gross Salary',
+      daysWorked: 'Days Worked in Period',
+      days: 'days',
+      eligibleAmount: 'Eligible Bonus Amount',
+      bonusAmount: 'Gross Bonus Amount',
+      taxWithheld: 'Tax Withheld (15%)',
+      netBonusAmount: 'Net Bonus Amount'
+    },
+    explanations: {
+      title: 'Tax Explanations',
+      incomeTaxExplain: 'Income Tax Explained',
+      withholdingExplain: 'Withholding Tax Explained',
+      holidayBonusExplain: 'Holiday Bonuses Explained',
+      incomeBasics: 'Income Tax Basics',
+      incomeRates: 'Income Tax Rates',
+      incomeExamples: 'Income Tax Examples',
+      withholdingBasics: 'Withholding Tax Basics',
+      withholdingRates: 'Withholding Tax Rates',
+      withholdingExamples: 'Withholding Tax Examples',
+      holidayTypes: 'Types of Holiday Bonuses',
+      holidayCalculation: 'How Holiday Bonuses Are Calculated',
+      holidayExamples: 'Holiday Bonus Examples'
     }
   },
   disclaimer: {
@@ -121,7 +139,8 @@ const elTranslations = {
     tabs: {
       incomeTax: 'Φόρος Εισοδήματος',
       withholdingTax: 'Παρακράτηση Φόρου',
-      giftTax: 'Φόρος Δωρεών'
+      holidayBonus: 'Επιδόματα Εορτών',
+      explanations: 'Επεξηγήσεις'
     },
     common: {
       calculate: 'Υπολογισμός',
@@ -160,23 +179,40 @@ const elTranslations = {
       withholdingTaxAmount: 'Παρακράτηση Φόρου',
       netSalary: 'Καθαρός Μηνιαίος Μισθός'
     },
-    giftTax: {
-      title: 'Υπολογιστής Φόρου Δωρεών & Κληρονομιών',
-      giftValue: 'Αξία Δωρεάς/Κληρονομιάς (€)',
-      relationship: 'Σχέση με Δωρητή/Θανόντα',
-      categoryA: 'Κατηγορία Α (Σύζυγος, Παιδιά, Γονείς)',
-      categoryB: 'Κατηγορία Β (Εγγόνια, Αδέλφια, κλπ.)',
-      categoryC: 'Κατηγορία Γ (Άλλοι συγγενείς, Μη συγγενείς)',
-      giftType: 'Τύπος',
-      money: 'Χρήματα/Κινητή Περιουσία',
-      realEstate: 'Ακίνητη Περιουσία',
-      previousGifts: 'Προηγούμενες Δωρεές από το Ίδιο Άτομο (€)',
-      resultsTitle: 'Αποτελέσματα Φόρου Δωρεάς/Κληρονομιάς',
-      totalGiftValue: 'Συνολική Αξία Δωρεάς/Κληρονομιάς',
-      taxRate: 'Εφαρμοζόμενος Φορολογικός Συντελεστής',
-      taxFreeAmount: 'Αφορολόγητο Ποσό',
-      taxableGift: 'Φορολογητέο Ποσό',
-      giftTaxAmount: 'Πληρωτέος Φόρος Δωρεάς/Κληρονομιάς'
+    holidayBonus: {
+      title: 'Υπολογιστής Επιδομάτων Εορτών',
+      monthlySalary: 'Μηνιαίος Μισθός (€)',
+      startDate: 'Ημερομηνία Έναρξης Εργασίας',
+      bonusType: 'Τύπος Επιδόματος',
+      christmasBonus: 'Δώρο Χριστουγέννων',
+      easterBonus: 'Δώρο Πάσχα',
+      summerBonus: 'Επίδομα Αδείας',
+      paymentDate: 'Ημερομηνία Πληρωμής',
+      optional: 'προαιρετικό',
+      todayDefault: 'Αφήστε κενό για χρήση σημερινής ημερομηνίας',
+      resultsTitle: 'Αποτελέσματα Υπολογισμού Επιδόματος',
+      grossSalary: 'Μηνιαίος Μικτός Μισθός',
+      daysWorked: 'Ημέρες Εργασίας στην Περίοδο',
+      days: 'ημέρες',
+      eligibleAmount: 'Δικαιούμενο Ποσό Επιδόματος',
+      bonusAmount: 'Μικτό Ποσό Επιδόματος',
+      taxWithheld: 'Παρακρατούμενος Φόρος (15%)',
+      netBonusAmount: 'Καθαρό Ποσό Επιδόματος'
+    },
+    explanations: {
+      title: 'Επεξηγήσεις Φορολογίας',
+      incomeTaxExplain: 'Επεξήγηση Φόρου Εισοδήματος',
+      withholdingExplain: 'Επεξήγηση Παρακράτησης Φόρου',
+      holidayBonusExplain: 'Επεξήγηση Επιδομάτων Εορτών',
+      incomeBasics: 'Βασικά Φόρου Εισοδήματος',
+      incomeRates: 'Συντελεστές Φόρου Εισοδήματος',
+      incomeExamples: 'Παραδείγματα Φόρου Εισοδήματος',
+      withholdingBasics: 'Βασικά Παρακράτησης Φόρου',
+      withholdingRates: 'Συντελεστές Παρακράτησης Φόρου',
+      withholdingExamples: 'Παραδείγματα Παρακράτησης Φόρου',
+      holidayTypes: 'Τύποι Επιδομάτων Εορτών',
+      holidayCalculation: 'Πώς Υπολογίζονται τα Επιδόματα Εορτών',
+      holidayExamples: 'Παραδείγματα Επιδομάτων Εορτών'
     }
   },
   disclaimer: {
