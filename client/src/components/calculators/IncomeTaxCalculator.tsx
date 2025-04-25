@@ -23,9 +23,7 @@ export default function IncomeTaxCalculator() {
     employmentIncome: '',
     selfEmploymentIncome: '',
     rentalIncome: '',
-    pensionIncome: '',
-    medicalExpenses: '',
-    charitableDonations: ''
+    pensionIncome: ''
   });
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -150,36 +148,7 @@ export default function IncomeTaxCalculator() {
           </div>
         </div>
 
-        {/* Deductions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="form-group">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.medicalExpenses')}
-            </label>
-            <input 
-              type="number" 
-              min="0" 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
-              id="medicalExpenses"
-              value={formData.medicalExpenses}
-              onChange={handleInputChange}
-            />
-          </div>
 
-          <div className="form-group">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.incomeTax.charitableDonations')}
-            </label>
-            <input 
-              type="number" 
-              min="0" 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
-              id="charitableDonations"
-              value={formData.charitableDonations}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
 
         {/* Calculate Button */}
         <div className="text-center mt-6">

@@ -26,8 +26,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         selfEmploymentIncome: parseFloat(data.selfEmploymentIncome) || 0,
         rentalIncome: parseFloat(data.rentalIncome) || 0,
         pensionIncome: parseFloat(data.pensionIncome) || 0,
-        medicalExpenses: parseFloat(data.medicalExpenses) || 0,
-        charitableDonations: parseFloat(data.charitableDonations) || 0,
+        medicalExpenses: 0, // Default to 0 since removed from UI
+        charitableDonations: 0, // Default to 0 since removed from UI
         familyStatus: data.familyStatus,
         children: data.children
       });

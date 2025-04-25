@@ -22,8 +22,7 @@ export default function HolidayBonusCalculator() {
   const [formData, setFormData] = useState({
     monthlySalary: '',
     startDate: '',
-    bonusType: 'christmas',
-    paymentDate: ''
+    bonusType: 'christmas'
   });
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -37,7 +36,7 @@ export default function HolidayBonusCalculator() {
       // Calculate locally for immediate results
       const monthlySalary = parseFloat(formData.monthlySalary) || 0;
       const startDate = new Date(formData.startDate);
-      const paymentDate = formData.paymentDate ? new Date(formData.paymentDate) : new Date();
+      const paymentDate = new Date(); // Always use today's date
       
       const calculationData = {
         monthlySalary,
@@ -48,9 +47,6 @@ export default function HolidayBonusCalculator() {
       
       const result = calculateHolidayBonus(calculationData);
       setResults(result);
-      
-      // Optional: Send to server for logging/verification
-      // await apiRequest('POST', '/api/calculate/holiday-bonus', formData);
     } catch (error) {
       console.error('Error calculating holiday bonus:', error);
     } finally {
@@ -95,36 +91,20 @@ export default function HolidayBonusCalculator() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="form-group">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.holidayBonus.bonusType')}
-            </label>
-            <select 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
-              id="bonusType"
-              value={formData.bonusType}
-              onChange={handleInputChange}
-            >
-              <option value="christmas">{t('calculators.holidayBonus.christmasBonus')}</option>
-              <option value="easter">{t('calculators.holidayBonus.easterBonus')}</option>
-              <option value="summer">{t('calculators.holidayBonus.summerBonus')}</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('calculators.holidayBonus.paymentDate')} ({t('calculators.holidayBonus.optional')})
-            </label>
-            <input 
-              type="date" 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
-              id="paymentDate"
-              value={formData.paymentDate}
-              onChange={handleInputChange}
-              placeholder={t('calculators.holidayBonus.todayDefault')}
-            />
-          </div>
+        <div className="form-group">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {t('calculators.holidayBonus.bonusType')}
+          </label>
+          <select 
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0D5EAF] focus:border-transparent"
+            id="bonusType"
+            value={formData.bonusType}
+            onChange={handleInputChange}
+          >
+            <option value="christmas">{t('calculators.holidayBonus.christmasBonus')}</option>
+            <option value="easter">{t('calculators.holidayBonus.easterBonus')}</option>
+            <option value="summer">{t('calculators.holidayBonus.summerBonus')}</option>
+          </select>
         </div>
 
         {/* Calculate Button */}
