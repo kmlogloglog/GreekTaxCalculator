@@ -24,11 +24,8 @@ export default function Footer() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0 bg-white bg-opacity-10 backdrop-blur-sm p-4 rounded-lg border border-blue-400 border-opacity-30">
-            <h2 className="text-xl font-extrabold mb-2 flex items-center">
+            <h2 className="text-xl font-extrabold mb-2">
               {t('footer.title')}
-              <span className="ml-2 text-xs bg-yellow-400 text-blue-800 px-2 py-1 rounded-full uppercase font-bold">
-                2025
-              </span>
             </h2>
             <p className="text-sm text-blue-100">{t('footer.subtitle')}</p>
           </div>

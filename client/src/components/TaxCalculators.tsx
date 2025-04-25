@@ -36,10 +36,10 @@ export default function TaxCalculators() {
         className="w-full"
       >
         <div className="flex border-b border-gray-200">
-          <TabsList className="flex w-full bg-gradient-to-r from-blue-50 to-blue-100 p-1 h-auto rounded-t-xl">
+          <TabsList className="flex w-full bg-gradient-to-r from-blue-50 to-blue-100 p-2 h-auto rounded-t-xl gap-2">
             <TabsTrigger 
               value="income-tax" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+              className="flex-1 text-center py-2 px-3 text-sm font-medium rounded-lg transition-all duration-300
                 data-[state=active]:bg-gradient-to-r 
                 data-[state=active]:from-blue-500 
                 data-[state=active]:to-blue-600 
@@ -50,7 +50,7 @@ export default function TaxCalculators() {
             </TabsTrigger>
             <TabsTrigger 
               value="withholding-tax" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+              className="flex-1 text-center py-2 px-3 text-sm font-medium rounded-lg transition-all duration-300
                 data-[state=active]:bg-gradient-to-r 
                 data-[state=active]:from-blue-500 
                 data-[state=active]:to-blue-600 
@@ -61,7 +61,7 @@ export default function TaxCalculators() {
             </TabsTrigger>
             <TabsTrigger 
               value="holiday-bonus" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+              className="flex-1 text-center py-2 px-3 text-sm font-medium rounded-lg transition-all duration-300
                 data-[state=active]:bg-gradient-to-r 
                 data-[state=active]:from-blue-500 
                 data-[state=active]:to-blue-600 
@@ -72,7 +72,7 @@ export default function TaxCalculators() {
             </TabsTrigger>
             <TabsTrigger 
               value="explanations" 
-              className="flex-1 text-center py-4 px-4 font-medium rounded-lg transition-all duration-300
+              className="flex-1 text-center py-2 px-3 text-sm font-medium rounded-lg transition-all duration-300
                 data-[state=active]:bg-gradient-to-r 
                 data-[state=active]:from-blue-500 
                 data-[state=active]:to-blue-600 
