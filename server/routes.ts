@@ -109,6 +109,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Gift Tax Calculator API
+  app.post("/api/calculate/gift-tax", (req, res) => {
+    try {
+      const data = req.body;
+      // Basic calculation logic (replace with real rules if needed)
+      const giftValue = parseFloat(data.giftValue) || 0;
+      const previousGifts = parseFloat(data.previousGifts) || 0;
+      const relationship = data.relationship || 'category-a';
+      const giftType = data.giftType || 'money';
+
+      // Example thresholds (replace with real Greek tax law if available)
+      let taxFreeAmount = 0;
+      let taxRate = '0%';
+      let rate = 0;
+      if (relationship === 'category-a') {
+        taxFreeAmount = 80000;
+        rate = 0.10;
+        taxRate = '10%';
+      } else if (relationship === 'category-b') {
+        taxFreeAmount = 30000;
+        rate = 0.20;
+        taxRate = '20%';
+      } else {
+        taxFreeAmount = 6000;
+        rate = 0.40;
+        taxRate = '40%';
+      }
+
+      const totalGiftValue = giftValue + previousGifts;
+      const taxableGift = Math.max(0, totalGiftValue - taxFreeAmount);
+      const giftTaxAmount = taxableGift * rate;
+
+      res.json({
+        totalGiftValue,
+        taxRate,
+        taxFreeAmount,
+        taxableGift,
+        giftTaxAmount
+      });
+    } catch (error) {
+      console.error("Gift tax calculation error:", error);
+      res.status(500).json({ message: "Error calculating gift tax" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

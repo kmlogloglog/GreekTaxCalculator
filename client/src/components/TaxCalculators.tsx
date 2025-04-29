@@ -36,7 +36,7 @@ export default function TaxCalculators() {
         className="w-full"
       >
         <div className="flex border-b border-gray-200">
-          <TabsList className="flex w-full bg-gradient-to-r from-blue-50 to-blue-100 p-2 h-auto rounded-t-xl gap-2">
+          <TabsList className="w-full bg-gradient-to-r from-blue-50 to-blue-100 p-2 h-auto rounded-t-xl gap-2 grid grid-cols-2 md:flex">
             <TabsTrigger 
               value="income-tax" 
               className="flex-1 text-center py-2 px-3 text-sm font-medium rounded-lg transition-all duration-300
