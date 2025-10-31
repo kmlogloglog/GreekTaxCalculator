@@ -77,25 +77,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const annualSalaries = parseInt(data.annualSalaries || '14');
       const grossAnnualSalary = monthlySalary * annualSalaries;
       
-      // Use new calculation system
+      // Use new calculation system with corrected progressive tax algorithm
       const result = calculateGreekTaxes({
         grossAnnualSalary,
-        children: data.children || 0,
-        age: data.age,
+        children: parseInt(data.children) || 0,
+        age: data.age ? parseInt(data.age) : undefined,
         months: annualSalaries
       });
       
-      // Format response for withholding tax
+      // Format response for withholding tax UI
+      // Includes all fields needed by WithholdingTaxCalculator component
       const response = {
-        monthlySalary: result.breakdown.monthlyGross,
-        monthlyNet: result.breakdown.monthlyNet,
-        monthlyTax: result.breakdown.monthlyTax,
-        monthlyInsurance: result.breakdown.monthlyEmployeeContributions,
+        // Monthly values
+        grossSalary: result.breakdown.monthlyGross,
+        socialSecurity: result.breakdown.monthlyEmployeeContributions,
+        withholdingTaxAmount: result.breakdown.monthlyTax,
+        netSalary: result.breakdown.monthlyNet,
+        
+        // Annual values
         annualGross: result.grossSalary,
-        annualNet: result.netIncome,
-        annualTax: result.incomeTax,
         annualInsurance: result.employeeContributions,
-        effectiveTaxRate: result.effectiveTaxRate
+        annualTaxableIncome: result.taxableIncome,
+        annualTax: result.incomeTax,
+        annualNet: result.netIncome,
+        
+        // Employer costs
+        employerContributionsMonthly: result.breakdown.monthlyEmployerContributions,
+        employerContributionsAnnual: result.employerContributions,
+        employerCostMonthly: result.breakdown.monthlyGross + result.breakdown.monthlyEmployerContributions,
+        employerCostAnnual: result.grossSalary + result.employerContributions,
+        
+        // Percentages for breakdown chart
+        insurancePercentage: ((result.employeeContributions / result.grossSalary) * 100).toFixed(1),
+        taxPercentage: ((result.incomeTax / result.grossSalary) * 100).toFixed(1),
+        netPercentage: ((result.netIncome / result.grossSalary) * 100).toFixed(1)
       };
       
       res.json(response);
