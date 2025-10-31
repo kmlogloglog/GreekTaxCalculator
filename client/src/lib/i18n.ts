@@ -13,7 +13,7 @@ const enTranslations = {
   calculators: {
     tabs: {
       incomeTax: 'Income Tax',
-      withholdingTax: 'Withholding Tax',
+      withholdingTax: 'Withholding and Employer Tax',
       holidayBonus: 'Holiday Bonus',
       explanations: 'Explanations'
     },
@@ -139,7 +139,7 @@ const elTranslations = {
   calculators: {
     tabs: {
       incomeTax: 'Φόρος Εισοδήματος',
-      withholdingTax: 'Παρακράτηση Φόρου',
+      withholdingTax: 'Παρακράτηση και Εργοδοτικές Εισφορές',
       holidayBonus: 'Επιδόματα Εορτών',
       explanations: 'Επεξηγήσεις'
     },

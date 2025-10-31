@@ -58,22 +58,36 @@ const AGE_BENEFITS: Record<string, AgeBenefit> = {
 
 /**
  * Calculate progressive tax based on tax brackets
+ * CORRECTED: Properly handles progressive taxation by tracking remaining income
+ * 
+ * Example for €24,256 taxable income:
+ * - First €10,000 × 9% = €900
+ * - Next €10,000 × 22% = €2,200
+ * - Next €4,256 × 28% = €1,191.68
+ * - Total: €4,291.68
  */
 function calculateProgressiveTax(taxableIncome: number): number {
   let totalTax = 0;
+  let remainingIncome = taxableIncome;
   
-  for (const bracket of TAX_BRACKETS) {
-    if (taxableIncome <= bracket.min) {
-      break;
-    }
+  // Progressive tax brackets with limits (not cumulative thresholds)
+  const brackets = [
+    { limit: 10000, rate: 0.09 },   // 9% on first €10,000
+    { limit: 10000, rate: 0.22 },   // 22% on next €10,000 (€10,001-€20,000)
+    { limit: 10000, rate: 0.28 },   // 28% on next €10,000 (€20,001-€30,000)
+    { limit: 10000, rate: 0.36 },   // 36% on next €10,000 (€30,001-€40,000)
+    { limit: Infinity, rate: 0.44 } // 44% on everything above €40,000
+  ];
+  
+  for (const bracket of brackets) {
+    if (remainingIncome <= 0) break;
     
-    const taxableInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
-    if (taxableInBracket > 0) {
-      totalTax += taxableInBracket * bracket.rate;
-    }
+    const taxableInBracket = Math.min(remainingIncome, bracket.limit);
+    totalTax += taxableInBracket * bracket.rate;
+    remainingIncome -= taxableInBracket;
   }
   
-  return totalTax;
+  return Math.round(totalTax * 100) / 100; // Round to 2 decimal places
 }
 
 
@@ -662,22 +676,81 @@ export function calculateProRatedBonuses(input: BonusCalculationInput): BonusCal
 }
 
 /**
- * Validate calculation against known example
+ * Validate calculations against known test cases
+ * 
+ * Test Case 1: €2,000 monthly gross (€28,000 annual)
+ * Expected: Tax = €4,291.68, Monthly Net = €1,426.05
+ * 
+ * Test Case 2: €830 minimum wage (€11,620 annual)
+ * Expected: Tax = €0 (below tax threshold after insurance)
  */
-export function validateCalculation(): boolean {
-  const result = calculateGreekTaxes({
+export function validateCalculation(): {
+  test1: boolean;
+  test2: boolean;
+  test3: boolean;
+  allPassed: boolean;
+  details: any;
+} {
+  // Test 1: €2,000 monthly gross
+  const test1Result = calculateGreekTaxes({
+    grossAnnualSalary: 28000, // €2,000 × 14
+    children: 0,
+    months: 14
+  });
+  
+  const test1Pass = 
+    Math.abs(test1Result.incomeTax - 4291.68) < 1 && // Tax should be €4,291.68
+    Math.abs(test1Result.breakdown.monthlyNet - 1426.05) < 1; // Monthly net should be €1,426.05
+  
+  // Test 2: €830 minimum wage
+  const test2Result = calculateGreekTaxes({
+    grossAnnualSalary: 11620, // €830 × 14
+    children: 0,
+    months: 14
+  });
+  
+  const test2Pass = test2Result.incomeTax === 0; // Should have €0 tax
+  
+  // Test 3: Original validation (€1,000 monthly)
+  const test3Result = calculateGreekTaxes({
     grossAnnualSalary: 14000,
     children: 0,
     months: 14
   });
   
-  const expectedNet = 11534;
-  const expectedContributions = 1876;
-  const expectedTax = 590;
+  const test3Pass = 
+    Math.abs(test3Result.netIncome - 11534) < 10 &&
+    Math.abs(test3Result.employeeContributions - 1876) < 10 &&
+    Math.abs(test3Result.incomeTax - 590) < 10;
   
-  const netMatch = Math.abs(result.netIncome - expectedNet) < 10;
-  const contributionsMatch = Math.abs(result.employeeContributions - expectedContributions) < 10;
-  const taxMatch = Math.abs(result.incomeTax - expectedTax) < 10;
-  
-  return netMatch && contributionsMatch && taxMatch;
+  return {
+    test1: test1Pass,
+    test2: test2Pass,
+    test3: test3Pass,
+    allPassed: test1Pass && test2Pass && test3Pass,
+    details: {
+      test1: {
+        description: "€2,000 monthly gross",
+        expected: { tax: 4291.68, monthlyNet: 1426.05 },
+        actual: { 
+          tax: test1Result.incomeTax, 
+          monthlyNet: test1Result.breakdown.monthlyNet 
+        }
+      },
+      test2: {
+        description: "€830 minimum wage",
+        expected: { tax: 0 },
+        actual: { tax: test2Result.incomeTax }
+      },
+      test3: {
+        description: "€1,000 monthly gross",
+        expected: { net: 11534, insurance: 1876, tax: 590 },
+        actual: { 
+          net: test3Result.netIncome,
+          insurance: test3Result.employeeContributions,
+          tax: test3Result.incomeTax
+        }
+      }
+    }
+  };
 }
