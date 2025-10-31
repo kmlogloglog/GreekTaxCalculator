@@ -224,50 +224,111 @@ export default function IncomeTaxCalculator() {
 
       {/* Results Section */}
       {results && (
-        <motion.div 
-          className="results-card"
+        <motion.div
+          className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-xl border border-blue-100"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h4 className="text-xl font-bold mb-4 text-blue-600 relative inline-block">
-            Tax Calculation Results
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-blue-500 rounded"></div>
-          </h4>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex flex-col space-y-3">
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Annual Gross Salary</span>
-                <span className="font-bold text-lg text-blue-700">€{results.totalIncome.toFixed(2)}</span>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-blue-600 rounded-lg">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h4 className="text-2xl font-bold text-gray-800">
+              Tax Calculation Results
+            </h4>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {/* Annual Gross Salary */}
+            <motion.div
+              className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-600">Annual Gross Salary</span>
+                <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Tax Rate</span>
-                <span className="font-bold text-lg text-blue-700">{results.taxRate}</span>
+              <div className="font-bold text-2xl text-blue-700">€{results.totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            </motion.div>
+
+            {/* Tax Rate */}
+            <motion.div
+              className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-600">Effective Tax Rate</span>
+                <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
               </div>
-              
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Tax Deductions</span>
-                <span className="font-bold text-lg text-blue-700">€{results.taxDeductions.toFixed(2)}</span>
+              <div className="font-bold text-2xl text-orange-600">{results.taxRate}</div>
+            </motion.div>
+
+            {/* Tax Deductions */}
+            <motion.div
+              className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-600">Tax Credits</span>
+                <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div className="font-bold text-2xl text-green-600">€{results.taxDeductions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            </motion.div>
+
+            {/* Income Tax Amount */}
+            <motion.div
+              className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-600">Income Tax</span>
+                <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="font-bold text-2xl text-red-600">€{results.incomeTaxAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            </motion.div>
+          </div>
+
+          {/* Total Tax - Highlighted */}
+          <motion.div
+            className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 rounded-xl shadow-lg"
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-blue-100 text-sm font-medium mb-1">Total Annual Tax Payable</div>
+                <div className="font-bold text-4xl text-white">€{results.totalTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+              </div>
+              <div className="p-4 bg-white/20 rounded-full">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+                </svg>
               </div>
             </div>
-            
-            <div className="flex flex-col space-y-3">
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Income Tax Amount</span>
-                <span className="font-bold text-lg text-blue-700">€{results.incomeTaxAmount.toFixed(2)}</span>
-              </div>
-              
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Solidarity Contribution</span>
-                <span className="font-bold text-lg text-blue-700">€{results.solidarityAmount.toFixed(2)}</span>
-              </div>
-              
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg shadow-md">
-                <span className="text-white block mb-1 text-sm">Total Tax</span>
-                <span className="font-bold text-xl text-white">€{results.totalTax.toFixed(2)}</span>
-              </div>
+          </motion.div>
+
+          {/* Net Income Estimate */}
+          <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center gap-2 text-sm text-green-800">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="font-medium">
+                Estimated Net Income: €{(results.totalIncome - results.totalTax - (results.totalIncome * 0.134)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                <span className="text-xs ml-2">(after tax and social security)</span>
+              </span>
             </div>
           </div>
         </motion.div>

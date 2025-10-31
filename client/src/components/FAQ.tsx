@@ -12,19 +12,9 @@ export default function FAQ() {
   
   const faqItems = [
     {
-      id: 'changes',
-      question: 'faq.items.changes.question',
-      answer: 'faq.items.changes.answer'
-    },
-    {
       id: 'calculation',
       question: 'faq.items.calculation.question',
       answer: 'faq.items.calculation.answer'
-    },
-    {
-      id: 'gift',
-      question: 'faq.items.gift.question',
-      answer: 'faq.items.gift.answer'
     },
     {
       id: 'withholding',
@@ -32,9 +22,44 @@ export default function FAQ() {
       answer: 'faq.items.withholding.answer'
     },
     {
+      id: 'socialSecurity',
+      question: 'faq.items.socialSecurity.question',
+      answer: 'faq.items.socialSecurity.answer'
+    },
+    {
+      id: 'taxResidence',
+      question: 'faq.items.taxResidence.question',
+      answer: 'faq.items.taxResidence.answer'
+    },
+    {
+      id: 'holidayBonuses',
+      question: 'faq.items.holidayBonuses.question',
+      answer: 'faq.items.holidayBonuses.answer'
+    },
+    {
       id: 'families',
       question: 'faq.items.families.question',
       answer: 'faq.items.families.answer'
+    },
+    {
+      id: 'digitalReceipts',
+      question: 'faq.items.digitalReceipts.question',
+      answer: 'faq.items.digitalReceipts.answer'
+    },
+    {
+      id: 'deadlines',
+      question: 'faq.items.deadlines.question',
+      answer: 'faq.items.deadlines.answer'
+    },
+    {
+      id: 'changes',
+      question: 'faq.items.changes.question',
+      answer: 'faq.items.changes.answer'
+    },
+    {
+      id: 'gift',
+      question: 'faq.items.gift.question',
+      answer: 'faq.items.gift.answer'
     }
   ];
   

@@ -117,6 +117,26 @@ const enTranslations = {
       families: {
         question: 'Are there special tax deductions for families with children in Greece for 2025?',
         answer: 'Yes, for 2025, Greece offers tax benefits for families with children. These include increased tax-free thresholds based on the number of dependent children: €1,000 additional tax-free amount for one child, €2,000 for two children, €5,000 for three children, and an extra €1,000 for each child beyond three. Additionally, certain child-related expenses like education costs can be included in the tax deduction allowed for digital transactions (electronic receipts).'
+      },
+      socialSecurity: {
+        question: 'What are the social security contribution rates in Greece for 2025?',
+        answer: 'For employees in Greece in 2025, the social security contribution rate is approximately 13.87% of gross salary, deducted from the employee\'s monthly income. Employers also contribute an additional amount (typically around 22-24% of gross salary) toward social security. Self-employed individuals typically pay around 27.1% of their declared income for social security contributions.'
+      },
+      taxResidence: {
+        question: 'What is the Tax Residence Transfer benefit and who qualifies?',
+        answer: 'The Tax Residence Transfer benefit is a 50% reduction on income tax for individuals who transfer their tax residence to Greece from abroad. This incentive is designed to attract skilled workers, investors, and retirees to Greece. To qualify, you must not have been a Greek tax resident for at least 5 of the 6 previous years, and you must maintain Greek tax residency for at least 2 consecutive years. This benefit applies to employment income and certain other income types.'
+      },
+      holidayBonuses: {
+        question: 'How are holiday bonuses (Christmas, Easter, Summer) calculated in Greece?',
+        answer: 'Greek employees are entitled to three annual bonuses: Christmas bonus (equal to one month\'s salary, calculated for the period May 1 - December 31), Easter bonus (half month\'s salary, calculated for January 1 - April 30), and Summer holiday bonus (half month\'s salary, calculated for January 1 - June 30). These bonuses are prorated based on days worked in each period. A 15% withholding tax applies to holiday bonuses, or 7.5% for those with tax residence transfer benefits.'
+      },
+      digitalReceipts: {
+        question: 'How do digital receipts affect my tax deductions in Greece?',
+        answer: 'Greece encourages digital transactions through tax incentives. For 2025, you can claim a tax deduction based on your total electronic receipts (receipts with your tax ID - AFM). The deduction is calculated as 22% of the amount of digital receipts that exceed 30% of your total income, up to certain limits. Categories include medical expenses, rent, education, utilities, and general expenses. Keeping digital receipts helps reduce your final tax liability.'
+      },
+      deadlines: {
+        question: 'What are the important tax deadlines in Greece for 2025?',
+        answer: 'Key tax deadlines for 2025 in Greece include: Annual tax returns must be filed by the end of June (typically June 30th). Tax payments can be made in installments - usually 2 to 8 installments depending on the amount owed. The first installment is typically due at the end of July, with subsequent installments spread throughout the year. Withholding tax is deducted monthly from salaries. It\'s important to check with the Greek tax authority (AADE) for exact dates each year.'
       }
     }
   },
@@ -243,6 +263,26 @@ const elTranslations = {
       families: {
         question: 'Υπάρχουν ειδικές φορολογικές εκπτώσεις για οικογένειες με παιδιά στην Ελλάδα για το 2025;',
         answer: 'Ναι, για το 2025, η Ελλάδα προσφέρει φορολογικά οφέλη για οικογένειες με παιδιά. Αυτά περιλαμβάνουν αυξημένα αφορολόγητα όρια με βάση τον αριθμό των εξαρτώμενων παιδιών: €1.000 επιπλέον αφορολόγητο ποσό για ένα παιδί, €2.000 για δύο παιδιά, €5.000 για τρία παιδιά και επιπλέον €1.000 για κάθε παιδί πέραν των τριών. Επιπλέον, ορισμένα έξοδα που σχετίζονται με παιδιά, όπως τα έξοδα εκπαίδευσης, μπορούν να συμπεριληφθούν στην φορολογική έκπτωση που επιτρέπεται για ψηφιακές συναλλαγές (ηλεκτρονικές αποδείξεις).'
+      },
+      socialSecurity: {
+        question: 'Ποιοι είναι οι συντελεστές εισφορών κοινωνικής ασφάλισης στην Ελλάδα για το 2025;',
+        answer: 'Για τους εργαζομένους στην Ελλάδα το 2025, ο συντελεστής εισφορών κοινωνικής ασφάλισης είναι περίπου 13,87% του μικτού μισθού, που αφαιρείται από το μηνιαίο εισόδημα του εργαζομένου. Οι εργοδότες επίσης συνεισφέρουν ένα επιπλέον ποσό (συνήθως περίπου 22-24% του μικτού μισθού) για την κοινωνική ασφάλιση. Οι αυτοαπασχολούμενοι συνήθως πληρώνουν περίπου 27,1% του δηλωθέντος εισοδήματός τους για εισφορές κοινωνικής ασφάλισης.'
+      },
+      taxResidence: {
+        question: 'Τι είναι το όφελος Μεταφοράς Φορολογικής Κατοικίας και ποιοι δικαιούνται;',
+        answer: 'Το όφελος Μεταφοράς Φορολογικής Κατοικίας είναι μείωση 50% στον φόρο εισοδήματος για άτομα που μεταφέρουν τη φορολογική τους κατοικία στην Ελλάδα από το εξωτερικό. Αυτό το κίνητρο έχει σχεδιαστεί για να προσελκύσει ειδικευμένους εργαζομένους, επενδυτές και συνταξιούχους στην Ελλάδα. Για να δικαιούστε, δεν πρέπει να ήσασταν έλληνας φορολογικός κάτοικος για τουλάχιστον 5 από τα 6 προηγούμενα έτη, και πρέπει να διατηρήσετε την ελληνική φορολογική κατοικία για τουλάχιστον 2 συνεχόμενα έτη. Αυτό το όφελος ισχύει για εισόδημα από εργασία και ορισμένους άλλους τύπους εισοδήματος.'
+      },
+      holidayBonuses: {
+        question: 'Πώς υπολογίζονται τα επιδόματα εορτών (Χριστουγέννων, Πάσχα, Καλοκαιριού) στην Ελλάδα;',
+        answer: 'Οι Έλληνες εργαζόμενοι δικαιούνται τρία ετήσια επιδόματα: Επίδομα Χριστουγέννων (ίσο με έναν μηνιαίο μισθό, υπολογίζεται για την περίοδο 1 Μαΐου - 31 Δεκεμβρίου), Επίδομα Πάσχα (μισός μηνιαίος μισθός, υπολογίζεται για 1 Ιανουαρίου - 30 Απριλίου), και Επίδομα καλοκαιρινών διακοπών (μισός μηνιαίος μισθός, υπολογίζεται για 1 Ιανουαρίου - 30 Ιουνίου). Αυτά τα επιδόματα είναι αναλογικά βάσει των ημερών εργασίας σε κάθε περίοδο. Εφαρμόζεται παρακράτηση φόρου 15% στα επιδόματα εορτών, ή 7,5% για όσους έχουν όφελος μεταφοράς φορολογικής κατοικίας.'
+      },
+      digitalReceipts: {
+        question: 'Πώς επηρεάζουν οι ψηφιακές αποδείξεις τις φορολογικές μου εκπτώσεις στην Ελλάδα;',
+        answer: 'Η Ελλάδα ενθαρρύνει τις ψηφιακές συναλλαγές μέσω φορολογικών κινήτρων. Για το 2025, μπορείτε να διεκδικήσετε φορολογική έκπτωση με βάση το σύνολο των ηλεκτρονικών αποδείξεών σας (αποδείξεις με τον αριθμό φορολογικού μητρώου σας - ΑΦΜ). Η έκπτωση υπολογίζεται ως 22% του ποσού των ψηφιακών αποδείξεων που υπερβαίνει το 30% του συνολικού εισοδήματός σας, έως ορισμένα όρια. Οι κατηγορίες περιλαμβάνουν ιατρικά έξοδα, ενοίκιο, εκπαίδευση, κοινωφελή και γενικά έξοδα. Η τήρηση ψηφιακών αποδείξεων βοηθά στη μείωση της τελικής φορολογικής σας υποχρέωσης.'
+      },
+      deadlines: {
+        question: 'Ποιες είναι οι σημαντικές φορολογικές προθεσμίες στην Ελλάδα για το 2025;',
+        answer: 'Οι βασικές φορολογικές προθεσμίες για το 2025 στην Ελλάδα περιλαμβάνουν: Οι ετήσιες φορολογικές δηλώσεις πρέπει να υποβληθούν μέχρι το τέλος Ιουνίου (συνήθως 30 Ιουνίου). Οι πληρωμές φόρων μπορούν να γίνουν σε δόσεις - συνήθως 2 έως 8 δόσεις ανάλογα με το οφειλόμενο ποσό. Η πρώτη δόση συνήθως οφείλεται στο τέλος Ιουλίου, με τις επόμενες δόσεις να κατανέμονται καθ\' όλη τη διάρκεια του έτους. Η παρακράτηση φόρου αφαιρείται μηνιαίως από τους μισθούς. Είναι σημαντικό να ελέγξετε με την ελληνική φορολογική αρχή (ΑΑΔΕ) για τις ακριβείς ημερομηνίες κάθε χρόνο.'
       }
     }
   },
