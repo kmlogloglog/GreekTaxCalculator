@@ -2,16 +2,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { apiRequest } from '@/lib/queryClient';
-import { calculateHolidayBonus } from '@/lib/taxCalculations';
 
 interface HolidayBonusResults {
-  grossSalary: number;
-  daysWorked: number;
-  eligibleAmount: number;
-  bonusType: string;
   bonusAmount: number;
-  taxWithheld: number;
-  netBonusAmount: number;
+  bonusType: string;
+  tax: number;
+  insurance: number;
+  netBonus: number;
 }
 
 export default function HolidayBonusCalculator() {
@@ -33,19 +30,13 @@ export default function HolidayBonusCalculator() {
   const calculateBonus = async () => {
     setIsLoading(true);
     try {
-      // Calculate locally for immediate results
-      const monthlySalary = parseFloat(formData.monthlySalary) || 0;
-      const startDate = new Date(formData.startDate);
-      const paymentDate = new Date(); // Always use today's date
+      const res = await apiRequest('POST', '/api/calculate/holiday-bonus', {
+        monthlySalary: formData.monthlySalary,
+        startDate: formData.startDate,
+        bonusType: formData.bonusType
+      });
       
-      const calculationData = {
-        monthlySalary,
-        startDate,
-        bonusType: formData.bonusType,
-        paymentDate
-      };
-      
-      const result = calculateHolidayBonus(calculationData);
+      const result = await res.json() as HolidayBonusResults;
       setResults(result);
     } catch (error) {
       console.error('Error calculating holiday bonus:', error);
@@ -136,35 +127,30 @@ export default function HolidayBonusCalculator() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col space-y-3">
               <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Monthly Gross Salary</span>
-                <span className="font-bold text-lg text-blue-700">€{results.grossSalary.toFixed(2)}</span>
-              </div>
-              
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Days Worked</span>
-                <span className="font-bold text-lg text-blue-700">{results.daysWorked} days</span>
-              </div>
-              
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Eligible Bonus Amount</span>
-                <span className="font-bold text-lg text-blue-700">€{results.eligibleAmount.toFixed(2)}</span>
-              </div>
-            </div>
-            
-            <div className="flex flex-col space-y-3">
-              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                 <span className="text-gray-600 block mb-1 text-sm">Bonus Type</span>
                 <span className="font-bold text-lg text-blue-700">{t(`calculators.holidayBonus.${results.bonusType}Bonus`)}</span>
               </div>
               
               <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Gross Bonus Amount</span>
+                <span className="font-bold text-lg text-blue-700">€{results.bonusAmount.toFixed(2)}</span>
+              </div>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Insurance Contributions</span>
+                <span className="font-bold text-lg text-blue-700">€{results.insurance.toFixed(2)}</span>
+              </div>
+            </div>
+            
+            <div className="flex flex-col space-y-3">
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                 <span className="text-gray-600 block mb-1 text-sm">Tax Withheld</span>
-                <span className="font-bold text-lg text-blue-700">€{results.taxWithheld.toFixed(2)}</span>
+                <span className="font-bold text-lg text-blue-700">€{results.tax.toFixed(2)}</span>
               </div>
               
               <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg shadow-md">
                 <span className="text-white block mb-1 text-sm">Net Bonus Amount</span>
-                <span className="font-bold text-xl text-white">€{results.netBonusAmount.toFixed(2)}</span>
+                <span className="font-bold text-xl text-white">€{results.netBonus.toFixed(2)}</span>
               </div>
             </div>
           </div>

@@ -5,11 +5,11 @@ import { apiRequest } from '@/lib/queryClient';
 
 interface IncomeTaxResults {
   totalIncome: number;
-  taxRate: string;
-  taxDeductions: number;
-  incomeTaxAmount: number;
-  solidarityAmount: number;
-  totalTax: number;
+  insuranceContributions: number;
+  taxableIncome: number;
+  incomeTax: number;
+  netIncome: number;
+  effectiveTaxRate: string;
 }
 
 export default function IncomeTaxCalculator() {
@@ -239,34 +239,49 @@ export default function IncomeTaxCalculator() {
             <div className="flex flex-col space-y-3">
               <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                 <span className="text-gray-600 block mb-1 text-sm">Annual Gross Salary</span>
-                <span className="font-bold text-lg text-blue-700">€{results.totalIncome.toFixed(2)}</span>
+                <span className="font-bold text-lg text-blue-700">€{(results.totalIncome || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               
               <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Tax Rate</span>
-                <span className="font-bold text-lg text-blue-700">{results.taxRate}</span>
+                <span className="text-gray-600 block mb-1 text-sm">Monthly Gross Salary</span>
+                <span className="font-bold text-lg text-blue-700">€{((results.totalIncome || 0) / parseInt(formData.annualSalaries)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               
               <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Tax Deductions</span>
-                <span className="font-bold text-lg text-blue-700">€{results.taxDeductions.toFixed(2)}</span>
+                <span className="text-gray-600 block mb-1 text-sm">Insurance Contributions</span>
+                <span className="font-bold text-lg text-blue-700">€{(results.insuranceContributions || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              </div>
+              
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Taxable Income</span>
+                <span className="font-bold text-lg text-blue-700">€{(results.taxableIncome || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
             
             <div className="flex flex-col space-y-3">
               <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Income Tax Amount</span>
-                <span className="font-bold text-lg text-blue-700">€{results.incomeTaxAmount.toFixed(2)}</span>
+                <span className="text-gray-600 block mb-1 text-sm">Net Income (Per Year)</span>
+                <span className="font-bold text-lg text-blue-700">€{(results.netIncome || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               
               <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <span className="text-gray-600 block mb-1 text-sm">Solidarity Contribution</span>
-                <span className="font-bold text-lg text-blue-700">€{results.solidarityAmount.toFixed(2)}</span>
+                <span className="text-gray-600 block mb-1 text-sm">Net Income (Per Month)</span>
+                <span className="font-bold text-lg text-blue-700">€{((results.netIncome || 0) / parseInt(formData.annualSalaries)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg shadow-md">
-                <span className="text-white block mb-1 text-sm">Total Tax</span>
-                <span className="font-bold text-xl text-white">€{results.totalTax.toFixed(2)}</span>
+              <div className="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="text-gray-600 block mb-1 text-sm">Effective Tax Rate</span>
+                <span className="font-bold text-lg text-blue-700">{results.effectiveTaxRate || '0%'}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Tax to Pay - Full Width Rectangular Card (Main Purpose) */}
+          <div className="mt-6">
+            <div className="bg-gradient-to-r from-red-500 to-red-600 p-6 rounded-lg shadow-md">
+              <span className="text-white block mb-3 text-lg font-semibold">{t('calculators.incomeTax.incomeTaxAmount')}</span>
+              <div className="text-center">
+                <span className="font-bold text-4xl text-white">€{(results.incomeTax || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
           </div>

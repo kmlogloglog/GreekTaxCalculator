@@ -39,7 +39,7 @@ const enTranslations = {
       totalIncome: 'Total Taxable Income',
       taxRate: 'Tax Rate',
       taxDeductions: 'Tax Deductions',
-      incomeTaxAmount: 'Income Tax',
+      incomeTaxAmount: 'Tax You Are Expected to Pay to Your Tax Office This Year',
       solidarityAmount: 'Solidarity Contribution',
       totalTax: 'Total Tax Payable'
     },
@@ -165,7 +165,7 @@ const elTranslations = {
       totalIncome: 'Συνολικό Φορολογητέο Εισόδημα',
       taxRate: 'Φορολογικός Συντελεστής',
       taxDeductions: 'Φορολογικές Εκπτώσεις',
-      incomeTaxAmount: 'Φόρος Εισοδήματος',
+      incomeTaxAmount: 'Φόρος που Αναμένεται να Πληρώσετε στην Εφορία σας Φέτος',
       solidarityAmount: 'Εισφορά Αλληλεγγύης',
       totalTax: 'Συνολικός Πληρωτέος Φόρος'
     },
